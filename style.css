@@ -55,6 +55,26 @@ button {
 }
 
 /* =========================
+   REDUCED MOTION
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    .reveal {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    .hero-enter {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
+
+/* =========================
    TYPOGRAPHY
 ========================= */
 
@@ -111,7 +131,17 @@ h1, h2, h3, h4 {
     backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--border);
     z-index: 100;
-    transition: var(--transition);
+    opacity: 0;
+    transform: translateY(-12px);
+    transition: background var(--transition), border-color var(--transition);
+    animation: navEnter 0.6s ease 0.05s forwards;
+}
+
+@keyframes navEnter {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .logo {
@@ -132,16 +162,41 @@ h1, h2, h3, h4 {
     gap: 36px;
 }
 
-.nav-links a {
+.nav-link {
     font-size: 0.9rem;
     font-weight: 500;
     color: var(--text-muted);
     transition: color var(--transition);
     letter-spacing: 0.3px;
+    position: relative;
+    padding-bottom: 4px;
 }
 
-.nav-links a:hover {
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--accent);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover {
     color: var(--text);
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.nav-link.active {
+    color: var(--text);
+}
+
+.nav-link.active::after {
+    width: 100%;
 }
 
 /* Hamburger */
@@ -164,6 +219,19 @@ h1, h2, h3, h4 {
     transition: var(--transition);
 }
 
+.nav-toggle.open span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggle.open span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+.nav-toggle.open span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
 /* Mobile Nav */
 
 .mobile-nav {
@@ -180,7 +248,7 @@ h1, h2, h3, h4 {
     gap: 40px;
     z-index: 99;
     transform: translateX(100%);
-    transition: transform 0.4s ease;
+    transition: transform 0.45s cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 .mobile-nav.open {
@@ -193,7 +261,20 @@ h1, h2, h3, h4 {
     font-weight: 800;
     color: var(--text);
     transition: color var(--transition);
+    opacity: 0;
+    transform: translateX(20px);
+    transition: color var(--transition), opacity 0.4s ease, transform 0.4s ease;
 }
+
+.mobile-nav.open a {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.mobile-nav.open a:nth-child(1) { transition-delay: 0.1s; }
+.mobile-nav.open a:nth-child(2) { transition-delay: 0.17s; }
+.mobile-nav.open a:nth-child(3) { transition-delay: 0.24s; }
+.mobile-nav.open a:nth-child(4) { transition-delay: 0.31s; }
 
 .mobile-nav a:hover {
     color: var(--accent);
@@ -211,6 +292,13 @@ h1, h2, h3, h4 {
     font-size: 0.95rem;
     transition: all var(--transition);
     border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
 }
 
 .btn-primary {
@@ -237,7 +325,7 @@ h1, h2, h3, h4 {
 }
 
 .btn:active {
-    transform: scale(0.97);
+    transform: scale(0.97) !important;
 }
 
 /* =========================
@@ -261,13 +349,14 @@ h1, h2, h3, h4 {
     opacity: 0.04;
     pointer-events: none;
     z-index: 0;
+    will-change: transform;
+    transition: transform 0.1s linear;
 }
 
 .hero-content {
     position: relative;
     z-index: 1;
     max-width: 820px;
-    animation: fadeUp 0.9s ease forwards;
 }
 
 .eyebrow {
@@ -320,6 +409,37 @@ h1, h2, h3, h4 {
     color: var(--border-hover);
 }
 
+/* Hero entrance animations */
+
+.hero-enter {
+    opacity: 0;
+    transform: translateY(22px);
+    animation: heroFadeUp 0.7s ease forwards;
+    animation-delay: var(--delay, 0s);
+}
+
+@keyframes heroFadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================
+   SCROLL REVEAL
+========================= */
+
+.reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 /* =========================
    ABOUT
 ========================= */
@@ -352,6 +472,11 @@ h1, h2, h3, h4 {
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 44px;
+    transition: border-color var(--transition);
+}
+
+.about-card:hover {
+    border-color: var(--border-hover);
 }
 
 .about-card p {
@@ -376,11 +501,12 @@ h1, h2, h3, h4 {
     border: 1px solid var(--border);
     border-radius: 14px;
     padding: 24px 28px;
-    transition: all var(--transition);
+    transition: all 0.3s ease;
+    cursor: default;
 }
 
 .pillar:hover {
-    border-color: var(--border-hover);
+    border-color: var(--accent);
     transform: translateX(6px);
     background: var(--bg-card-hover);
 }
@@ -430,13 +556,13 @@ h1, h2, h3, h4 {
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 36px;
-    transition: all var(--transition);
+    transition: all 0.35s ease;
 }
 
 .skill-card:hover {
     border-color: var(--border-hover);
     transform: translateY(-6px);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
 }
 
 .skill-num {
@@ -479,13 +605,15 @@ h1, h2, h3, h4 {
     font-size: 0.8rem;
     font-weight: 600;
     color: var(--text-muted);
-    transition: all var(--transition);
+    transition: all 0.25s ease;
+    cursor: default;
 }
 
 .tags span:hover {
     background: var(--accent);
     color: #fff;
     border-color: var(--accent);
+    transform: translateY(-2px);
 }
 
 /* =========================
@@ -521,15 +649,20 @@ h1, h2, h3, h4 {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    transition: all var(--transition);
+    transition: all 0.35s ease;
     cursor: pointer;
 }
 
 .project-card:hover {
     border-color: var(--border-hover);
     transform: translateY(-8px);
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
     background: var(--bg-card-hover);
+}
+
+.project-card:hover .project-btn {
+    border-color: var(--accent);
+    color: var(--accent);
 }
 
 .project-featured {
@@ -579,13 +712,18 @@ h1, h2, h3, h4 {
     color: var(--text-muted);
     font-size: 0.85rem;
     font-weight: 600;
-    transition: all var(--transition);
+    transition: all 0.3s ease;
 }
 
 .project-btn:hover {
     border-color: var(--accent);
     color: var(--accent);
     transform: translateX(4px);
+}
+
+.project-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
 }
 
 /* =========================
@@ -595,17 +733,20 @@ h1, h2, h3, h4 {
 .modal {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
     display: none;
     align-items: center;
     justify-content: center;
     padding: 24px;
     z-index: 1000;
+    transition: background 0.35s ease, backdrop-filter 0.35s ease;
 }
 
 .modal.active {
     display: flex;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(12px);
 }
 
 .modal-box {
@@ -617,7 +758,18 @@ h1, h2, h3, h4 {
     width: min(680px, 100%);
     max-height: 85vh;
     overflow-y: auto;
-    animation: fadeUp 0.3s ease;
+    animation: modalIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 .modal-close {
@@ -640,6 +792,12 @@ h1, h2, h3, h4 {
 .modal-close:hover {
     border-color: var(--accent);
     color: var(--accent);
+    transform: rotate(90deg);
+}
+
+.modal-close:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
 }
 
 .modal-box h2 {
@@ -746,12 +904,13 @@ h1, h2, h3, h4 {
     font-family: var(--font-body);
     font-size: 0.95rem;
     outline: none;
-    transition: border-color var(--transition);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
     border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(232, 80, 122, 0.1);
 }
 
 .form-group input::placeholder,
@@ -789,13 +948,18 @@ h1, h2, h3, h4 {
     border: 1px solid var(--border);
     border-radius: 16px;
     padding: 24px 28px;
-    transition: all var(--transition);
+    transition: all 0.3s ease;
     color: var(--text);
 }
 
 .social-card:hover {
     border-color: var(--accent);
     transform: translateX(6px);
+}
+
+.social-card:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
 }
 
 .social-label {
@@ -816,11 +980,12 @@ h1, h2, h3, h4 {
 .social-arrow {
     color: var(--text-muted);
     font-size: 1.1rem;
-    transition: color var(--transition);
+    transition: all 0.3s ease;
 }
 
 .social-card:hover .social-arrow {
     color: var(--accent);
+    transform: translateX(4px);
 }
 
 /* =========================
@@ -852,7 +1017,7 @@ h1, h2, h3, h4 {
     color: var(--text);
 }
 
-.footer > .footer-inner > p {
+.footer-inner > p {
     color: var(--text-muted);
     font-size: 0.9rem;
 }
@@ -883,36 +1048,6 @@ h1, h2, h3, h4 {
     width: 100%;
     justify-content: center;
     flex-wrap: wrap;
-}
-
-/* =========================
-   SCROLL REVEAL
-========================= */
-
-.reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-}
-
-.reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* =========================
-   ANIMATIONS
-========================= */
-
-@keyframes fadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(28px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 /* =========================
