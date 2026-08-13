@@ -1,9 +1,53 @@
+/* =========================
+   MOBILE NAV
+========================= */
+
+const navToggle = document.querySelector('.nav-toggle');
+const mobileNav = document.querySelector('.mobile-nav');
+const mobileNavLinks = document.querySelectorAll('.mobile-nav a');
+
+navToggle.addEventListener('click', () => {
+    mobileNav.classList.toggle('open');
+    document.body.style.overflow = mobileNav.classList.contains('open') ? 'hidden' : '';
+});
+
+mobileNavLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        mobileNav.classList.remove('open');
+        document.body.style.overflow = '';
+    });
+});
+
+
+/* =========================
+   SCROLL REVEAL
+========================= */
+
+const revealElements = document.querySelectorAll('.reveal');
+
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            revealObserver.unobserve(entry.target);
+        }
+    });
+}, {
+    threshold: 0.12
+});
+
+revealElements.forEach(el => revealObserver.observe(el));
+
+
+/* =========================
+   PROJECT MODAL
+========================= */
+
 const projects = {
     website: {
-        category: "WEBSITE",
-        title: "Modern Business Website",
-        description:
-            "A responsive and modern website designed to give a business a professional online presence.",
+        category: 'WEBSITE',
+        title: 'Modern Business Website',
+        description: 'A responsive and modern website designed to give a business a professional online presence.',
         details: `
             <p><strong>Features</strong></p>
             <ul>
@@ -14,12 +58,10 @@ const projects = {
             </ul>
         `
     },
-
     bot: {
-        category: "CUSTOM BOT",
-        title: "Auto Middleman Bot",
-        description:
-            "A custom automation bot designed to organize and simplify transaction workflows.",
+        category: 'CUSTOM BOT',
+        title: 'Auto Middleman Bot',
+        description: 'A custom automation bot designed to organize and simplify transaction workflows.',
         details: `
             <p><strong>Features</strong></p>
             <ul>
@@ -30,12 +72,10 @@ const projects = {
             </ul>
         `
     },
-
     app: {
-        category: "APP",
-        title: "Restaurant App",
-        description:
-            "A premium restaurant app concept focused on simple navigation and a smooth ordering experience.",
+        category: 'APP',
+        title: 'Restaurant App',
+        description: 'A premium restaurant app concept focused on simple navigation and a smooth ordering experience.',
         details: `
             <p><strong>Features</strong></p>
             <ul>
@@ -48,104 +88,65 @@ const projects = {
     }
 };
 
-
-function openProject(projectName) {
-
-    const project = projects[projectName];
-
+function openProject(name) {
+    const project = projects[name];
     if (!project) return;
 
-    document.getElementById("modal-category").textContent =
-        project.category;
-
-    document.getElementById("modal-title").textContent =
-        project.title;
-
-    document.getElementById("modal-description").textContent =
-        project.description;
-
-    document.getElementById("modal-details").innerHTML =
-        project.details;
-
-    document.getElementById("project-modal").classList.add("active");
+    document.getElementById('modal-category').textContent = project.category;
+    document.getElementById('modal-title').textContent = project.title;
+    document.getElementById('modal-description').textContent = project.description;
+    document.getElementById('modal-details').innerHTML = project.details;
+    document.getElementById('project-modal').classList.add('active');
+    document.body.style.overflow = 'hidden';
 }
-
 
 function closeProject() {
-
-    document.getElementById("project-modal").classList.remove("active");
+    document.getElementById('project-modal').classList.remove('active');
+    document.body.style.overflow = '';
 }
 
+document.getElementById('project-modal').addEventListener('click', function (e) {
+    if (e.target === this) closeProject();
+});
 
-/* Close when clicking outside the modal */
-
-document.getElementById("project-modal").addEventListener("click", function (event) {
-
-    if (event.target === this) {
-        closeProject();
-    }
-
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeProject();
 });
 
 
-/* Close with Escape */
+/* =========================
+   CONTACT FORM
+========================= */
 
-document.addEventListener("keydown", function (event) {
+const contactForm = document.getElementById('contact-form');
+const formStatus = document.getElementById('form-status');
 
-    if (event.key === "Escape") {
-        closeProject();
-    }
+contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-});
-const contactForm = document.getElementById("contact-form");
-const formStatus = document.getElementById("form-status");
-
-contactForm.addEventListener("submit", async function (event) {
-
-    event.preventDefault();
-
-    const submitButton = contactForm.querySelector("button");
-
-    submitButton.disabled = true;
-    submitButton.textContent = "Sending...";
-
-    const formData = new FormData(contactForm);
+    const btn = contactForm.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
 
     try {
-
         const response = await fetch(contactForm.action, {
-            method: "POST",
-            body: formData,
-            headers: {
-                "Accept": "application/json"
-            }
+            method: 'POST',
+            body: new FormData(contactForm),
+            headers: { 'Accept': 'application/json' }
         });
 
         if (response.ok) {
-
-            formStatus.textContent =
-                "Message sent successfully! I'll get back to you soon. ✨";
-
+            formStatus.textContent = 'Message sent! I\'ll get back to you soon. ✨';
             contactForm.reset();
-
-            submitButton.textContent = "Message Sent ✓";
-
+            btn.textContent = 'Message Sent ✓';
         } else {
-
-            formStatus.textContent =
-                "Something went wrong. Please try again.";
-
-            submitButton.disabled = false;
-            submitButton.textContent = "Send Message →";
+            formStatus.textContent = 'Something went wrong. Please try again.';
+            btn.disabled = false;
+            btn.textContent = 'Send Message →';
         }
-
-    } catch (error) {
-
-        formStatus.textContent =
-            "Unable to send the message. Please try again.";
-
-        submitButton.disabled = false;
-        submitButton.textContent = "Send Message →";
+    } catch {
+        formStatus.textContent = 'Unable to send. Please try again.';
+        btn.disabled = false;
+        btn.textContent = 'Send Message →';
     }
-
 });

@@ -5,493 +5,338 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zishan | Developer & Creator</title>
+    <meta name="description" content="Zishan — Developer and creator building websites, bots, apps and automation projects.">
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <!-- Navigation -->
+    <!-- =====================
+         NAVIGATION
+    ===================== -->
     <header class="navbar">
-
         <a href="#" class="logo">ZISHAN</a>
 
-        <nav>
+        <nav class="nav-links">
             <a href="#about">About</a>
             <a href="#skills">Skills</a>
             <a href="#projects">Projects</a>
             <a href="#contact">Contact</a>
         </nav>
 
+        <button class="nav-toggle" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </header>
 
-
-    <!-- Hero -->
-    <main>
-
-        <section class="hero">
-
-            <div class="hero-content">
-
-                <p class="eyebrow">
-                    DEVELOPER · CREATOR · BUILDER
-                </p>
-
-                <h1>
-                    Turning ideas into
-                    <span>something real.</span>
-                </h1>
-
-                <p class="hero-description">
-                    I'm Zishan — I build websites, custom bots,
-                    apps and automation projects with a focus on
-                    clean design and useful experiences.
-                </p>
-
-                <div class="hero-buttons">
-
-                    <a href="#projects" class="button primary">
-                        Explore My Work →
-                    </a>
-
-                    <a href="#contact" class="button secondary">
-                        Let's Talk
-                    </a>
-
-                </div>
-                <div class="hero-stats">
-    <span>3 Projects</span>
-    <span>·</span>
-    <span>Python · JavaScript · HTML/CSS</span>
-    <span>·</span>
-    <span>Always building</span>
-</div>
-
-            </div>
-<div class="hero-decoration"></div>
-
-        </section>
-
-
-<!-- About -->
-<section id="about" class="about-section">
-
-    <div class="about-heading">
-
-        <p class="section-label">ABOUT ME</p>
-
-        <h2>
-            Curious by nature.
-            <span>Builder by choice.</span>
-        </h2>
-
-    </div>
-
-    <div class="about-content">
-
-        <div class="about-card">
-
-            <p>
-                I'm Zishan, a developer and creator who enjoys
-                turning ideas into useful digital experiences.
-            </p>
-
-            <p>
-                I explore web development, programming,
-                automation, custom bots, apps and creative
-                technology. Most of what I learn comes from
-                actually building things and experimenting.
-            </p>
-
-        </div>
-
-        <div class="about-highlight">
-
-            <div>
-                <strong>01</strong>
-                <p>Learn by building</p>
-            </div>
-
-            <div>
-                <strong>02</strong>
-                <p>Experiment constantly</p>
-            </div>
-
-            <div>
-                <strong>03</strong>
-                <p>Turn ideas into projects</p>
-            </div>
-
-        </div>
-
-    </div>
-    </section>
-<!-- Skills -->
-<section id="skills" class="skills-section">
-
-    <div class="skills-heading">
-
-        <p class="section-label">SKILLS</p>
-
-        <h2>
-            Things I build with.
-        </h2>
-
-        <p>
-            A growing toolkit shaped by curiosity,
-            experimentation and real projects.
-        </p>
-
-    </div>
-
-
-    <div class="skills-grid">
-
-        <!-- Programming -->
-        <div class="skill-group">
-
-            <div class="skill-number">01</div>
-
-            <h3>Programming</h3>
-
-            <p>Languages I use to build logic and applications.</p>
-
-            <div class="skill-tags">
-                <span>Python</span>
-                <span>JavaScript</span>
-                <span>TypeScript</span>
-                <span>HTML</span>
-                <span>CSS</span>
-                <span>SQL</span>
-            </div>
-
-        </div>
-
-
-        <!-- Development -->
-        <div class="skill-group">
-
-            <div class="skill-number">02</div>
-
-            <h3>Development</h3>
-
-            <p>Tools and technologies I use to create digital products.</p>
-
-            <div class="skill-tags">
-                <span>React</span>
-                <span>APIs</span>
-                <span>Web Development</span>
-                <span>App Development</span>
-                <span>Discord Bots</span>
-                <span>Automation</span>
-            </div>
-
-        </div>
-
-
-        <!-- Creative -->
-        <div class="skill-group">
-
-            <div class="skill-number">03</div>
-
-            <h3>Creative</h3>
-
-            <p>The creative side of my projects.</p>
-
-            <div class="skill-tags">
-                <span>Blender</span>
-                <span>UI/UX</span>
-                <span>3D Design</span>
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- Projects -->
-<section id="projects" class="projects-section">
-
-    <div class="projects-heading">
-
-        <p class="section-label">PROJECTS</p>
-
-        <h2>
-            Things I've built.
-        </h2>
-
-        <p>
-            A selection of websites, custom bots and apps
-            created to turn ideas into useful experiences.
-        </p>
-
-    </div>
-
-
-    <div class="projects-grid">
-
-        <!-- Website -->
-        <article class="project-card">
-
-            <div class="project-top">
-                <span class="project-number">01</span>
-                <span class="project-category">WEBSITE</span>
-            </div>
-
-            <div class="project-icon">↗</div>
-
-            <h3>Modern Business Website</h3>
-
-            <p>
-                A polished responsive website designed to give
-                a business a strong and professional digital presence.
-            </p>
-
-            <div class="project-tags">
-                <span>HTML</span>
-                <span>CSS</span>
-                <span>JavaScript</span>
-                <span>Responsive</span>
-            </div>
-
-            <button class="project-button" onclick="openProject('website')">
-                View Project →
-            </button>
-
-        </article>
-
-
-        <!-- Custom Bot -->
-        <article class="project-card featured-project">
-
-            <div class="project-top">
-                <span class="project-number">02</span>
-                <span class="project-category">CUSTOM BOT</span>
-            </div>
-
-            <div class="project-icon">⌁</div>
-
-            <h3>Auto Middleman Bot</h3>
-
-            <p>
-                A custom Discord bot designed to automate and
-                organize middleman-style transaction workflows.
-            </p>
-
-            <div class="project-tags">
-                <span>Python</span>
-                <span>Discord</span>
-                <span>Automation</span>
-                <span>API</span>
-            </div>
-
-            <button class="project-button" onclick="openProject('bot')">
-                View Project →
-            </button>
-
-        </article>
-
-
-        <!-- App -->
-        <article class="project-card">
-
-            <div class="project-top">
-                <span class="project-number">03</span>
-                <span class="project-category">APP</span>
-            </div>
-
-            <div class="project-icon">◇</div>
-
-            <h3>Restaurant App</h3>
-
-            <p>
-                A modern restaurant app concept with menu browsing,
-                food details, cart management and a clean mobile-first UI.
-            </p>
-
-            <div class="project-tags">
-                <span>UI/UX</span>
-                <span>JavaScript</span>
-                <span>App Design</span>
-            </div>
-
-            <button class="project-button" onclick="openProject('app')">
-                View Project →
-            </button>
-
-        </article>
-
-    </div>
-
-</section>
-
-
-<!-- Project Modal -->
-<div id="project-modal" class="project-modal">
-
-    <div class="modal-content">
-
-        <button class="modal-close" onclick="closeProject()">
-            ×
-        </button>
-
-        <p id="modal-category" class="section-label"></p>
-
-        <h2 id="modal-title"></h2>
-
-        <p id="modal-description"></p>
-
-        <div id="modal-details"></div>
-
-    </div>
-
-</div>
-
- <!-- Contact -->
-<section id="contact" class="contact-section">
-
-    <div class="contact-heading">
-
-        <p class="section-label">CONTACT</p>
-
-        <h2>
-            Let's build
-            <span>something.</span>
-        </h2>
-
-        <p>
-            Have an idea, project or question?
-            Send me a message and let's talk.
-        </p>
-
-    </div>
-
-
-    <div class="contact-grid">
-
-        <!-- Contact Form -->
-        <form
-    class="contact-form"
-    id="contact-form"
-    action="https://formspree.io/f/mvkproga"
-    method="POST"
->
-
-            <label for="name">Name</label>
-
-            <input
-                type="text"
-                id="name"
-                name="name"
-                placeholder="Your name"
-                required
-            >
-
-
-            <label for="email">Email</label>
-
-            <input
-                type="email"
-                id="email"
-                name="email"
-                placeholder="you@example.com"
-                required
-            >
-
-
-            <label for="message">Message</label>
-
-            <textarea
-                id="message"
-                name="message"
-                placeholder="Tell me about your project..."
-                rows="6"
-                required
-            ></textarea>
-
-
-            <button type="submit">
-                Send Message →
-            </button>
-
-            <p id="form-status"></p>
-
-        </form>
-
-
-        <!-- Socials -->
-        <div class="contact-socials">
-
-            <div class="social-card">
-
-                <span>WHATSAPP</span>
-
-                <h3>Let's chat.</h3>
-
-               <a href="https://wa.me/917034345577" target="_blank"></a>
-    Open WhatsApp →
-</a>
-
-            </div>
-
-
-            <div class="social-card">
-
-                <span>INSTAGRAM</span>
-
-                <h3>See what I'm up to.</h3>
-
-               <a href="https://www.instagram.com/z1shannnn?igsh=bDY3dGVkczNvZTVy&utm_source=qr" target="_blank">
-    Open Instagram →
-</a>
-
-            </div>
-
-
-            <div class="social-card">
-
-                <span>DISCORD</span>
-
-                <h3>Find me on Discord.</h3>
-
-                <a href="https://discord.gg/jTQmrqs3" target="_blank">
-    Open Discord →
-</a>
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-</main>
-
-<footer class="footer">
-
-    <div class="footer-logo">
-        ZISHAN
-    </div>
-
-    <p>Building ideas into something real.</p>
-
-    <div class="footer-links">
+    <!-- Mobile Nav Menu -->
+    <div class="mobile-nav">
         <a href="#about">About</a>
         <a href="#skills">Skills</a>
         <a href="#projects">Projects</a>
         <a href="#contact">Contact</a>
     </div>
 
-    <div class="footer-bottom">
-        <span>© 2026 Zishan</span>
-        <span>Made with HTML, CSS & JavaScript.</span>
-    </div>
+    <main>
 
-</footer>
+        <!-- =====================
+             HERO
+        ===================== -->
+        <section class="hero">
+            <div class="hero-dot-grid"></div>
 
-<script src="script.js"></script>
+            <div class="hero-content">
+                <p class="eyebrow">DEVELOPER · CREATOR · BUILDER</p>
+
+                <h1>
+                    Turning ideas into
+                    <span class="accent">something real.</span>
+                </h1>
+
+                <p class="hero-description">
+                    I'm Zishan — I build websites, custom bots, apps and automation
+                    projects with a focus on clean design and useful experiences.
+                </p>
+
+                <div class="hero-buttons">
+                    <a href="#projects" class="btn btn-primary">Explore My Work →</a>
+                    <a href="#contact" class="btn btn-secondary">Let's Talk</a>
+                </div>
+
+                <div class="hero-stats">
+                    <span>3 Projects</span>
+                    <span class="dot">·</span>
+                    <span>Python · JavaScript · HTML/CSS</span>
+                    <span class="dot">·</span>
+                    <span>Always building</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================
+             ABOUT
+        ===================== -->
+        <section id="about" class="about">
+            <div class="section-inner">
+                <div class="about-header reveal">
+                    <p class="section-label">ABOUT ME</p>
+                    <h2>Curious by nature.<br><span class="accent">Builder by choice.</span></h2>
+                </div>
+
+                <div class="about-grid">
+                    <div class="about-card reveal">
+                        <p>
+                            I'm Zishan, a developer and creator who enjoys turning ideas
+                            into useful digital experiences.
+                        </p>
+                        <p>
+                            I explore web development, programming, automation, custom bots,
+                            apps and creative technology. Most of what I learn comes from
+                            actually building things and experimenting.
+                        </p>
+                    </div>
+
+                    <div class="about-pillars reveal">
+                        <div class="pillar">
+                            <strong>01</strong>
+                            <p>Learn by building</p>
+                        </div>
+                        <div class="pillar">
+                            <strong>02</strong>
+                            <p>Experiment constantly</p>
+                        </div>
+                        <div class="pillar">
+                            <strong>03</strong>
+                            <p>Turn ideas into projects</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================
+             SKILLS
+        ===================== -->
+        <section id="skills" class="skills">
+            <div class="section-inner">
+                <div class="skills-header reveal">
+                    <p class="section-label">SKILLS</p>
+                    <h2>Things I build with.</h2>
+                    <p class="section-sub">A growing toolkit shaped by curiosity, experimentation and real projects.</p>
+                </div>
+
+                <div class="skills-grid">
+                    <div class="skill-card reveal">
+                        <div class="skill-num">01</div>
+                        <h3>Programming</h3>
+                        <p>Languages I use to build logic and applications.</p>
+                        <div class="tags">
+                            <span>Python</span>
+                            <span>JavaScript</span>
+                            <span>TypeScript</span>
+                            <span>HTML</span>
+                            <span>CSS</span>
+                            <span>SQL</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-card reveal">
+                        <div class="skill-num">02</div>
+                        <h3>Development</h3>
+                        <p>Tools and technologies I use to create digital products.</p>
+                        <div class="tags">
+                            <span>React</span>
+                            <span>APIs</span>
+                            <span>Web Development</span>
+                            <span>App Development</span>
+                            <span>Discord Bots</span>
+                            <span>Automation</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-card reveal">
+                        <div class="skill-num">03</div>
+                        <h3>Creative</h3>
+                        <p>The creative side of my projects.</p>
+                        <div class="tags">
+                            <span>Blender</span>
+                            <span>UI/UX</span>
+                            <span>3D Design</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================
+             PROJECTS
+        ===================== -->
+        <section id="projects" class="projects">
+            <div class="section-inner">
+                <div class="projects-header reveal">
+                    <p class="section-label">PROJECTS</p>
+                    <h2>Things I've built.</h2>
+                    <p class="section-sub">A selection of websites, custom bots and apps created to turn ideas into useful experiences.</p>
+                </div>
+
+                <div class="projects-grid">
+
+                    <article class="project-card reveal" data-project="website">
+                        <div class="project-meta">
+                            <span class="project-num">01</span>
+                            <span class="project-type">WEBSITE</span>
+                        </div>
+                        <h3>Modern Business Website</h3>
+                        <p>A polished responsive website designed to give a business a strong and professional digital presence.</p>
+                        <div class="tags">
+                            <span>HTML</span>
+                            <span>CSS</span>
+                            <span>JavaScript</span>
+                            <span>Responsive</span>
+                        </div>
+                        <button class="project-btn" onclick="openProject('website')">
+                            View Project →
+                        </button>
+                    </article>
+
+                    <article class="project-card project-featured reveal" data-project="bot">
+                        <div class="project-meta">
+                            <span class="project-num">02</span>
+                            <span class="project-type">CUSTOM BOT</span>
+                        </div>
+                        <h3>Auto Middleman Bot</h3>
+                        <p>A custom Discord bot designed to automate and organize middleman-style transaction workflows.</p>
+                        <div class="tags">
+                            <span>Python</span>
+                            <span>Discord</span>
+                            <span>Automation</span>
+                            <span>API</span>
+                        </div>
+                        <button class="project-btn" onclick="openProject('bot')">
+                            View Project →
+                        </button>
+                    </article>
+
+                    <article class="project-card reveal" data-project="app">
+                        <div class="project-meta">
+                            <span class="project-num">03</span>
+                            <span class="project-type">APP</span>
+                        </div>
+                        <h3>Restaurant App</h3>
+                        <p>A modern restaurant app concept with menu browsing, food details, cart management and a clean mobile-first UI.</p>
+                        <div class="tags">
+                            <span>UI/UX</span>
+                            <span>JavaScript</span>
+                            <span>App Design</span>
+                        </div>
+                        <button class="project-btn" onclick="openProject('app')">
+                            View Project →
+                        </button>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================
+             PROJECT MODAL
+        ===================== -->
+        <div id="project-modal" class="modal">
+            <div class="modal-box">
+                <button class="modal-close" onclick="closeProject()">×</button>
+                <p id="modal-category" class="section-label"></p>
+                <h2 id="modal-title"></h2>
+                <p id="modal-description"></p>
+                <div id="modal-details"></div>
+            </div>
+        </div>
+
+        <!-- =====================
+             CONTACT
+        ===================== -->
+        <section id="contact" class="contact">
+            <div class="section-inner">
+                <div class="contact-header reveal">
+                    <p class="section-label">CONTACT</p>
+                    <h2>Let's build <span class="accent">something.</span></h2>
+                    <p class="section-sub">Have an idea, project or question? Send me a message and let's talk.</p>
+                </div>
+
+                <div class="contact-grid">
+                    <form
+                        class="contact-form reveal"
+                        id="contact-form"
+                        action="https://formspree.io/f/mvkproga"
+                        method="POST"
+                    >
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" placeholder="Your name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" placeholder="Tell me about your project..." rows="5" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Send Message →</button>
+                        <p id="form-status"></p>
+                    </form>
+
+                    <div class="contact-socials reveal">
+                        <a href="https://wa.me/917034345577" target="_blank" class="social-card">
+                            <span class="social-label">WHATSAPP</span>
+                            <p>Let's chat.</p>
+                            <span class="social-arrow">→</span>
+                        </a>
+
+                        <a href="https://www.instagram.com/z1shannnn" target="_blank" class="social-card">
+                            <span class="social-label">INSTAGRAM</span>
+                            <p>See what I'm up to.</p>
+                            <span class="social-arrow">→</span>
+                        </a>
+
+                        <a href="https://discord.gg/jTQmrqs3" target="_blank" class="social-card">
+                            <span class="social-label">DISCORD</span>
+                            <p>Find me on Discord.</p>
+                            <span class="social-arrow">→</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- =====================
+         FOOTER
+    ===================== -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-logo">ZISHAN</div>
+            <p>Building ideas into something real.</p>
+            <div class="footer-links">
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Zishan</span>
+                <span>Made with HTML, CSS & JavaScript.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
 
 </body>
 </html>
