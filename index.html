@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body class="loading">
 
     <!-- =====================
          NAVIGATION
@@ -19,10 +19,10 @@
         <a href="#" class="logo">ZISHAN</a>
 
         <nav class="nav-links">
-            <a href="#about">About</a>
-            <a href="#skills">Skills</a>
-            <a href="#projects">Projects</a>
-            <a href="#contact">Contact</a>
+            <a href="#about" class="nav-link">About</a>
+            <a href="#skills" class="nav-link">Skills</a>
+            <a href="#projects" class="nav-link">Projects</a>
+            <a href="#contact" class="nav-link">Contact</a>
         </nav>
 
         <button class="nav-toggle" aria-label="Toggle navigation">
@@ -49,24 +49,24 @@
             <div class="hero-dot-grid"></div>
 
             <div class="hero-content">
-                <p class="eyebrow">DEVELOPER · CREATOR · BUILDER</p>
+                <p class="eyebrow hero-enter" style="--delay: 0.1s">DEVELOPER · CREATOR · BUILDER</p>
 
-                <h1>
+                <h1 class="hero-enter" style="--delay: 0.25s">
                     Turning ideas into
                     <span class="accent">something real.</span>
                 </h1>
 
-                <p class="hero-description">
+                <p class="hero-description hero-enter" style="--delay: 0.45s">
                     I'm Zishan — I build websites, custom bots, apps and automation
                     projects with a focus on clean design and useful experiences.
                 </p>
 
-                <div class="hero-buttons">
+                <div class="hero-buttons hero-enter" style="--delay: 0.6s">
                     <a href="#projects" class="btn btn-primary">Explore My Work →</a>
                     <a href="#contact" class="btn btn-secondary">Let's Talk</a>
                 </div>
 
-                <div class="hero-stats">
+                <div class="hero-stats hero-enter" style="--delay: 0.78s">
                     <span>3 Projects</span>
                     <span class="dot">·</span>
                     <span>Python · JavaScript · HTML/CSS</span>
@@ -81,13 +81,13 @@
         ===================== -->
         <section id="about" class="about">
             <div class="section-inner">
-                <div class="about-header reveal">
-                    <p class="section-label">ABOUT ME</p>
-                    <h2>Curious by nature.<br><span class="accent">Builder by choice.</span></h2>
+                <div class="about-header">
+                    <p class="section-label reveal">ABOUT ME</p>
+                    <h2 class="reveal" data-delay="100">Curious by nature.<br><span class="accent">Builder by choice.</span></h2>
                 </div>
 
                 <div class="about-grid">
-                    <div class="about-card reveal">
+                    <div class="about-card reveal" data-delay="0">
                         <p>
                             I'm Zishan, a developer and creator who enjoys turning ideas
                             into useful digital experiences.
@@ -99,7 +99,7 @@
                         </p>
                     </div>
 
-                    <div class="about-pillars reveal">
+                    <div class="about-pillars reveal" data-delay="150">
                         <div class="pillar">
                             <strong>01</strong>
                             <p>Learn by building</p>
@@ -122,14 +122,14 @@
         ===================== -->
         <section id="skills" class="skills">
             <div class="section-inner">
-                <div class="skills-header reveal">
-                    <p class="section-label">SKILLS</p>
-                    <h2>Things I build with.</h2>
-                    <p class="section-sub">A growing toolkit shaped by curiosity, experimentation and real projects.</p>
+                <div class="skills-header">
+                    <p class="section-label reveal">SKILLS</p>
+                    <h2 class="reveal" data-delay="100">Things I build with.</h2>
+                    <p class="section-sub reveal" data-delay="150">A growing toolkit shaped by curiosity, experimentation and real projects.</p>
                 </div>
 
                 <div class="skills-grid">
-                    <div class="skill-card reveal">
+                    <div class="skill-card reveal" data-delay="0">
                         <div class="skill-num">01</div>
                         <h3>Programming</h3>
                         <p>Languages I use to build logic and applications.</p>
@@ -143,7 +143,7 @@
                         </div>
                     </div>
 
-                    <div class="skill-card reveal">
+                    <div class="skill-card reveal" data-delay="100">
                         <div class="skill-num">02</div>
                         <h3>Development</h3>
                         <p>Tools and technologies I use to create digital products.</p>
@@ -157,7 +157,7 @@
                         </div>
                     </div>
 
-                    <div class="skill-card reveal">
+                    <div class="skill-card reveal" data-delay="200">
                         <div class="skill-num">03</div>
                         <h3>Creative</h3>
                         <p>The creative side of my projects.</p>
@@ -176,15 +176,15 @@
         ===================== -->
         <section id="projects" class="projects">
             <div class="section-inner">
-                <div class="projects-header reveal">
-                    <p class="section-label">PROJECTS</p>
-                    <h2>Things I've built.</h2>
-                    <p class="section-sub">A selection of websites, custom bots and apps created to turn ideas into useful experiences.</p>
+                <div class="projects-header">
+                    <p class="section-label reveal">PROJECTS</p>
+                    <h2 class="reveal" data-delay="100">Things I've built.</h2>
+                    <p class="section-sub reveal" data-delay="150">A selection of websites, custom bots and apps created to turn ideas into useful experiences.</p>
                 </div>
 
                 <div class="projects-grid">
 
-                    <article class="project-card reveal" data-project="website">
+                    <article class="project-card reveal" data-delay="0" data-project="website">
                         <div class="project-meta">
                             <span class="project-num">01</span>
                             <span class="project-type">WEBSITE</span>
@@ -202,7 +202,7 @@
                         </button>
                     </article>
 
-                    <article class="project-card project-featured reveal" data-project="bot">
+                    <article class="project-card project-featured reveal" data-delay="100" data-project="bot">
                         <div class="project-meta">
                             <span class="project-num">02</span>
                             <span class="project-type">CUSTOM BOT</span>
@@ -220,7 +220,7 @@
                         </button>
                     </article>
 
-                    <article class="project-card reveal" data-project="app">
+                    <article class="project-card reveal" data-delay="200" data-project="app">
                         <div class="project-meta">
                             <span class="project-num">03</span>
                             <span class="project-type">APP</span>
@@ -259,10 +259,10 @@
         ===================== -->
         <section id="contact" class="contact">
             <div class="section-inner">
-                <div class="contact-header reveal">
-                    <p class="section-label">CONTACT</p>
-                    <h2>Let's build <span class="accent">something.</span></h2>
-                    <p class="section-sub">Have an idea, project or question? Send me a message and let's talk.</p>
+                <div class="contact-header">
+                    <p class="section-label reveal">CONTACT</p>
+                    <h2 class="reveal" data-delay="100">Let's build <span class="accent">something.</span></h2>
+                    <p class="section-sub reveal" data-delay="150">Have an idea, project or question? Send me a message and let's talk.</p>
                 </div>
 
                 <div class="contact-grid">
@@ -291,22 +291,28 @@
                         <p id="form-status"></p>
                     </form>
 
-                    <div class="contact-socials reveal">
+                    <div class="contact-socials reveal" data-delay="150">
                         <a href="https://wa.me/917034345577" target="_blank" class="social-card">
-                            <span class="social-label">WHATSAPP</span>
-                            <p>Let's chat.</p>
+                            <div>
+                                <span class="social-label">WHATSAPP</span>
+                                <p>Let's chat.</p>
+                            </div>
                             <span class="social-arrow">→</span>
                         </a>
 
                         <a href="https://www.instagram.com/z1shannnn" target="_blank" class="social-card">
-                            <span class="social-label">INSTAGRAM</span>
-                            <p>See what I'm up to.</p>
+                            <div>
+                                <span class="social-label">INSTAGRAM</span>
+                                <p>See what I'm up to.</p>
+                            </div>
                             <span class="social-arrow">→</span>
                         </a>
 
                         <a href="https://discord.gg/jTQmrqs3" target="_blank" class="social-card">
-                            <span class="social-label">DISCORD</span>
-                            <p>Find me on Discord.</p>
+                            <div>
+                                <span class="social-label">DISCORD</span>
+                                <p>Find me on Discord.</p>
+                            </div>
                             <span class="social-arrow">→</span>
                         </a>
                     </div>
