@@ -3,13 +3,14 @@
 ========================= */
 
 :root {
-    --accent: var(--accent);
-    --bg-primary: var(--bg-primary);
-    --bg-secondary: var(--bg-secondary);
-    --text-primary: var(--text-primary);
-    --text-muted: var(--text-muted);
-    --border: var(--border);
+    --accent: #d94f8a;
+    --bg-primary: #fff9fc;
+    --bg-secondary: #ffffff;
+    --text-primary: #29232a;
+    --text-muted: #746970;
+    --border: #f0d8e4;
 }
+
 /* =========================
    BASIC RESET
 ========================= */
