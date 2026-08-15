@@ -1,11 +1,68 @@
 /* =========================
-   HERO ENTRANCE SEQUENCE
+   CURSOR SPOTLIGHT
+   Desktop only
 ========================= */
 
-// Remove loading class to trigger animations
-window.addEventListener('load', () => {
-    document.body.classList.remove('loading');
-});
+const isTouchDevice = () => window.matchMedia('(hover: none)').matches;
+
+if (!isTouchDevice()) {
+    const spotlight = document.createElement('div');
+    spotlight.classList.add('cursor-spotlight');
+    document.body.appendChild(spotlight);
+
+    const interactiveEls = 'a, button, .project-card, .skill-card, .social-card, .pillar';
+
+    let mouseX = 0, mouseY = 0;
+    let spotX = 0, spotY = 0;
+    let rafId;
+
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        spotlight.classList.add('visible');
+    });
+
+    document.addEventListener('mouseleave', () => {
+        spotlight.classList.remove('visible');
+    });
+
+    document.addEventListener('mouseover', (e) => {
+        if (e.target.closest(interactiveEls)) {
+            spotlight.classList.add('hovering');
+        }
+    });
+
+    document.addEventListener('mouseout', (e) => {
+        if (e.target.closest(interactiveEls)) {
+            spotlight.classList.remove('hovering');
+        }
+    });
+
+    function animateSpotlight() {
+        spotX += (mouseX - spotX) * 0.1;
+        spotY += (mouseY - spotY) * 0.1;
+        spotlight.style.left = spotX + 'px';
+        spotlight.style.top = spotY + 'px';
+        rafId = requestAnimationFrame(animateSpotlight);
+    }
+
+    animateSpotlight();
+}
+
+
+/* =========================
+   NAVBAR SCROLL BEHAVIOR
+========================= */
+
+const navbar = document.querySelector('.navbar');
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 40) {
+        navbar.classList.add('scrolled');
+    } else {
+        navbar.classList.remove('scrolled');
+    }
+}, { passive: true });
 
 
 /* =========================
@@ -84,11 +141,43 @@ revealElements.forEach(el => revealObserver.observe(el));
 
 const dotGrid = document.querySelector('.hero-dot-grid');
 
-if (dotGrid) {
+if (dotGrid && !isTouchDevice()) {
     document.addEventListener('mousemove', (e) => {
-        const x = (e.clientX / window.innerWidth - 0.5) * 12;
-        const y = (e.clientY / window.innerHeight - 0.5) * 12;
+        const x = (e.clientX / window.innerWidth - 0.5) * 14;
+        const y = (e.clientY / window.innerHeight - 0.5) * 14;
         dotGrid.style.transform = `translate(${x}px, ${y}px)`;
+    }, { passive: true });
+}
+
+
+/* =========================
+   PROJECT CARD 3D TILT
+========================= */
+
+if (!isTouchDevice()) {
+    document.querySelectorAll('.project-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = ((y - centerY) / centerY) * -4;
+            const rotateY = ((x - centerX) / centerX) * 4;
+            card.style.transform = `translateY(-8px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = '';
+            card.style.transition = 'all 0.5s ease';
+            setTimeout(() => {
+                card.style.transition = '';
+            }, 500);
+        });
+
+        card.addEventListener('mouseenter', () => {
+            card.style.transition = 'border-color 0.35s ease, box-shadow 0.35s ease, background 0.35s ease';
+        });
     });
 }
 

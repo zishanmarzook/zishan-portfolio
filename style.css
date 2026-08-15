@@ -4,6 +4,7 @@
 
 :root {
     --accent: #e8507a;
+    --accent-glow: rgba(232, 80, 122, 0.15);
     --bg: #0e0e0f;
     --bg-card: #161618;
     --bg-card-hover: #1c1c1f;
@@ -72,6 +73,44 @@ button {
         opacity: 1 !important;
         transform: none !important;
     }
+    .cursor-spotlight {
+        display: none !important;
+    }
+}
+
+/* =========================
+   CUSTOM CURSOR SPOTLIGHT
+========================= */
+
+.cursor-spotlight {
+    position: fixed;
+    width: 380px;
+    height: 380px;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        rgba(232, 80, 122, 0.07) 0%,
+        transparent 70%
+    );
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.12s ease, width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+}
+
+.cursor-spotlight.visible {
+    opacity: 1;
+}
+
+.cursor-spotlight.hovering {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(
+        circle,
+        rgba(232, 80, 122, 0.11) 0%,
+        transparent 70%
+    );
 }
 
 /* =========================
@@ -127,14 +166,24 @@ h1, h2, h3, h4 {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: rgba(14, 14, 15, 0.85);
-    backdrop-filter: blur(14px);
-    border-bottom: 1px solid var(--border);
+    background: transparent;
+    border-bottom: 1px solid transparent;
     z-index: 100;
     opacity: 0;
     transform: translateY(-12px);
-    transition: background var(--transition), border-color var(--transition);
     animation: navEnter 0.6s ease 0.05s forwards;
+    transition: background 0.4s ease,
+                border-color 0.4s ease,
+                backdrop-filter 0.4s ease,
+                padding 0.3s ease;
+}
+
+.navbar.scrolled {
+    background: rgba(14, 14, 15, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 7%;
 }
 
 @keyframes navEnter {
@@ -216,7 +265,7 @@ h1, h2, h3, h4 {
     height: 2px;
     background: var(--text);
     border-radius: 2px;
-    transition: var(--transition);
+    transition: transform 0.35s ease, opacity 0.35s ease;
 }
 
 .nav-toggle.open span:nth-child(1) {
@@ -260,10 +309,11 @@ h1, h2, h3, h4 {
     font-size: 2.5rem;
     font-weight: 800;
     color: var(--text);
-    transition: color var(--transition);
     opacity: 0;
     transform: translateX(20px);
-    transition: color var(--transition), opacity 0.4s ease, transform 0.4s ease;
+    transition: color var(--transition),
+                opacity 0.4s ease,
+                transform 0.4s ease;
 }
 
 .mobile-nav.open a {
@@ -308,8 +358,8 @@ h1, h2, h3, h4 {
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 30px rgba(232, 80, 122, 0.3);
-    opacity: 0.92;
+    box-shadow: 0 14px 32px rgba(232, 80, 122, 0.35);
+    opacity: 0.93;
 }
 
 .btn-secondary {
@@ -341,6 +391,38 @@ h1, h2, h3, h4 {
     overflow: hidden;
 }
 
+/* Ambient glow */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(232, 80, 122, 0.06) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+    animation: ambientPulse 6s ease-in-out infinite;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    bottom: -10%;
+    left: -5%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(232, 80, 122, 0.04) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+    animation: ambientPulse 8s ease-in-out infinite reverse;
+}
+
+@keyframes ambientPulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.08); }
+}
+
 .hero-dot-grid {
     position: absolute;
     inset: 0;
@@ -350,7 +432,6 @@ h1, h2, h3, h4 {
     pointer-events: none;
     z-index: 0;
     will-change: transform;
-    transition: transform 0.1s linear;
 }
 
 .hero-content {
@@ -509,6 +590,7 @@ h1, h2, h3, h4 {
     border-color: var(--accent);
     transform: translateX(6px);
     background: var(--bg-card-hover);
+    box-shadow: -3px 0 0 0 var(--accent);
 }
 
 .pillar strong {
@@ -557,12 +639,30 @@ h1, h2, h3, h4 {
     border-radius: var(--radius);
     padding: 36px;
     transition: all 0.35s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.skill-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.35s ease;
 }
 
 .skill-card:hover {
     border-color: var(--border-hover);
     transform: translateY(-6px);
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+}
+
+.skill-card:hover::before {
+    opacity: 1;
 }
 
 .skill-num {
@@ -651,6 +751,32 @@ h1, h2, h3, h4 {
     gap: 16px;
     transition: all 0.35s ease;
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+
+/* Shine sweep effect */
+.project-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+        105deg,
+        transparent 40%,
+        rgba(255, 255, 255, 0.03) 50%,
+        transparent 60%
+    );
+    transition: left 0.5s ease;
+    pointer-events: none;
+}
+
+.project-card:hover::after {
+    left: 150%;
 }
 
 .project-card:hover {
@@ -955,6 +1081,7 @@ h1, h2, h3, h4 {
 .social-card:hover {
     border-color: var(--accent);
     transform: translateX(6px);
+    box-shadow: 0 8px 30px rgba(232, 80, 122, 0.1);
 }
 
 .social-card:focus-visible {
@@ -1015,6 +1142,11 @@ h1, h2, h3, h4 {
     font-weight: 800;
     letter-spacing: 4px;
     color: var(--text);
+    transition: color var(--transition);
+}
+
+.footer-logo:hover {
+    color: var(--accent);
 }
 
 .footer-inner > p {
@@ -1032,10 +1164,27 @@ h1, h2, h3, h4 {
     font-size: 0.85rem;
     font-weight: 500;
     transition: color var(--transition);
+    position: relative;
+    padding-bottom: 2px;
+}
+
+.footer-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--accent);
+    transition: width 0.3s ease;
 }
 
 .footer-links a:hover {
     color: var(--text);
+}
+
+.footer-links a:hover::after {
+    width: 100%;
 }
 
 .footer-bottom {
@@ -1071,6 +1220,10 @@ h1, h2, h3, h4 {
         padding: 18px 6%;
     }
 
+    .navbar.scrolled {
+        padding: 14px 6%;
+    }
+
     .nav-links {
         display: none;
     }
@@ -1086,6 +1239,12 @@ h1, h2, h3, h4 {
     .hero h1 {
         font-size: clamp(3rem, 14vw, 5rem);
         letter-spacing: -2px;
+    }
+
+    .hero::before,
+    .hero::after {
+        width: 300px;
+        height: 300px;
     }
 
     .section-inner {
@@ -1109,5 +1268,9 @@ h1, h2, h3, h4 {
 
     .contact-form {
         padding: 30px;
+    }
+
+    .cursor-spotlight {
+        display: none;
     }
 }
