@@ -1,69 +1,91 @@
 /* =========================
-   CURSOR SPOTLIGHT
-   Desktop only
+   ZISHAN PORTFOLIO
+   Interaction + motion layer
 ========================= */
 
-const isTouchDevice = () => window.matchMedia('(hover: none)').matches;
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isTouchDevice = () => window.matchMedia('(hover: none), (pointer: coarse)').matches;
 
-if (!isTouchDevice()) {
+/* =========================
+   CURSOR SPOTLIGHT
+========================= */
+
+if (!isTouchDevice() && !reduceMotion) {
     const spotlight = document.createElement('div');
-    spotlight.classList.add('cursor-spotlight');
+    spotlight.className = 'cursor-spotlight';
     document.body.appendChild(spotlight);
 
     const interactiveEls = 'a, button, .project-card, .skill-card, .social-card, .pillar';
-
-    let mouseX = 0, mouseY = 0;
-    let spotX = 0, spotY = 0;
-    let rafId;
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let spotX = mouseX;
+    let spotY = mouseY;
 
     document.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
         spotlight.classList.add('visible');
-    });
 
-    document.addEventListener('mouseleave', () => {
-        spotlight.classList.remove('visible');
-    });
+        const target = e.target.closest(interactiveEls);
+        spotlight.classList.toggle('hovering', !!target);
+    }, { passive: true });
 
-    document.addEventListener('mouseover', (e) => {
-        if (e.target.closest(interactiveEls)) {
-            spotlight.classList.add('hovering');
-        }
-    });
+    document.addEventListener('mouseleave', () => spotlight.classList.remove('visible'));
 
-    document.addEventListener('mouseout', (e) => {
-        if (e.target.closest(interactiveEls)) {
-            spotlight.classList.remove('hovering');
-        }
-    });
-
-    function animateSpotlight() {
-        spotX += (mouseX - spotX) * 0.1;
-        spotY += (mouseY - spotY) * 0.1;
-        spotlight.style.left = spotX + 'px';
-        spotlight.style.top = spotY + 'px';
-        rafId = requestAnimationFrame(animateSpotlight);
-    }
+    const animateSpotlight = () => {
+        spotX += (mouseX - spotX) * 0.12;
+        spotY += (mouseY - spotY) * 0.12;
+        spotlight.style.left = `${spotX}px`;
+        spotlight.style.top = `${spotY}px`;
+        requestAnimationFrame(animateSpotlight);
+    };
 
     animateSpotlight();
 }
 
+/* =========================
+   POINTER GLOW ON CARDS
+========================= */
+
+if (!isTouchDevice() && !reduceMotion) {
+    const glowTargets = document.querySelectorAll(
+        '.project-card, .skill-card, .about-card, .social-card, .pillar'
+    );
+
+    glowTargets.forEach((el) => {
+        el.addEventListener('pointermove', (e) => {
+            const rect = el.getBoundingClientRect();
+            el.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+            el.style.setProperty('--my', `${e.clientY - rect.top}px`);
+        });
+    });
+}
 
 /* =========================
-   NAVBAR SCROLL BEHAVIOR
+   NAVBAR + SCROLL PROGRESS
 ========================= */
 
 const navbar = document.querySelector('.navbar');
+const progress = document.querySelector('.scroll-progress');
+const backToTop = document.querySelector('.back-to-top');
 
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 40) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
-    }
-}, { passive: true });
+const updateScrollUI = () => {
+    const scrollTop = window.scrollY;
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    const percentage = maxScroll > 0 ? (scrollTop / maxScroll) * 100 : 0;
 
+    navbar?.classList.toggle('scrolled', scrollTop > 40);
+    progress?.style.setProperty('width', `${percentage}%`);
+    backToTop?.classList.toggle('visible', scrollTop > 700);
+};
+
+window.addEventListener('scroll', updateScrollUI, { passive: true });
+window.addEventListener('resize', updateScrollUI);
+updateScrollUI();
+
+backToTop?.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+});
 
 /* =========================
    MOBILE NAV
@@ -73,20 +95,27 @@ const navToggle = document.querySelector('.nav-toggle');
 const mobileNav = document.querySelector('.mobile-nav');
 const mobileNavLinks = document.querySelectorAll('.mobile-nav a');
 
-navToggle.addEventListener('click', () => {
+const closeMobileNav = () => {
+    mobileNav?.classList.remove('open');
+    navToggle?.classList.remove('open');
+    document.body.style.overflow = '';
+    navToggle?.setAttribute('aria-expanded', 'false');
+};
+
+navToggle?.setAttribute('aria-expanded', 'false');
+
+navToggle?.addEventListener('click', () => {
     const isOpen = mobileNav.classList.toggle('open');
     navToggle.classList.toggle('open', isOpen);
+    navToggle.setAttribute('aria-expanded', String(isOpen));
     document.body.style.overflow = isOpen ? 'hidden' : '';
 });
 
-mobileNavLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        mobileNav.classList.remove('open');
-        navToggle.classList.remove('open');
-        document.body.style.overflow = '';
-    });
-});
+mobileNavLinks.forEach(link => link.addEventListener('click', closeMobileNav));
 
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) closeMobileNav();
+});
 
 /* =========================
    ACTIVE NAV SECTION
@@ -95,21 +124,25 @@ mobileNavLinks.forEach(link => {
 const sections = document.querySelectorAll('section[id]');
 const navLinks = document.querySelectorAll('.nav-link');
 
-const sectionObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
+if (sections.length && 'IntersectionObserver' in window) {
+    const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+
             navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${entry.target.id}`) {
-                    link.classList.add('active');
-                }
+                link.classList.toggle(
+                    'active',
+                    link.getAttribute('href') === `#${entry.target.id}`
+                );
             });
-        }
+        });
+    }, {
+        threshold: 0.35,
+        rootMargin: '-10% 0px -45% 0px'
     });
-}, { threshold: 0.4 });
 
-sections.forEach(section => sectionObserver.observe(section));
-
+    sections.forEach(section => sectionObserver.observe(section));
+}
 
 /* =========================
    SCROLL REVEAL
@@ -117,70 +150,69 @@ sections.forEach(section => sectionObserver.observe(section));
 
 const revealElements = document.querySelectorAll('.reveal');
 
-const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const delay = entry.target.dataset.delay || 0;
-            setTimeout(() => {
-                entry.target.classList.add('visible');
-            }, parseInt(delay));
+if (reduceMotion || !('IntersectionObserver' in window)) {
+    revealElements.forEach(el => el.classList.add('visible'));
+} else {
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+
+            const delay = Math.max(0, Number.parseInt(entry.target.dataset.delay || '0', 10));
+            window.setTimeout(() => entry.target.classList.add('visible'), delay);
             revealObserver.unobserve(entry.target);
-        }
+        });
+    }, {
+        threshold: 0.08,
+        rootMargin: '0px 0px -50px 0px'
     });
-}, {
-    threshold: 0.1,
-    rootMargin: '0px 0px -40px 0px'
-});
 
-revealElements.forEach(el => revealObserver.observe(el));
-
+    revealElements.forEach(el => revealObserver.observe(el));
+}
 
 /* =========================
-   DOT GRID PARALLAX
+   HERO PARALLAX
 ========================= */
 
 const dotGrid = document.querySelector('.hero-dot-grid');
 
-if (dotGrid && !isTouchDevice()) {
+if (dotGrid && !isTouchDevice() && !reduceMotion) {
+    let parallaxFrame = null;
+
     document.addEventListener('mousemove', (e) => {
-        const x = (e.clientX / window.innerWidth - 0.5) * 14;
-        const y = (e.clientY / window.innerHeight - 0.5) * 14;
-        dotGrid.style.transform = `translate(${x}px, ${y}px)`;
+        if (parallaxFrame) return;
+
+        parallaxFrame = requestAnimationFrame(() => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 16;
+            const y = (e.clientY / window.innerHeight - 0.5) * 16;
+            dotGrid.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+            parallaxFrame = null;
+        });
     }, { passive: true });
 }
-
 
 /* =========================
    PROJECT CARD 3D TILT
 ========================= */
 
-if (!isTouchDevice()) {
+if (!isTouchDevice() && !reduceMotion) {
     document.querySelectorAll('.project-card').forEach(card => {
-        card.addEventListener('mousemove', (e) => {
+        card.addEventListener('pointermove', (e) => {
             const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const rotateX = ((y - centerY) / centerY) * -4;
-            const rotateY = ((x - centerX) / centerX) * 4;
-            card.style.transform = `translateY(-8px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            const x = (e.clientX - rect.left) / rect.width;
+            const y = (e.clientY - rect.top) / rect.height;
+
+            const rotateX = (0.5 - y) * 5;
+            const rotateY = (x - 0.5) * 5;
+
+            card.style.transform =
+                `translateY(-8px) perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
         });
 
-        card.addEventListener('mouseleave', () => {
+        card.addEventListener('pointerleave', () => {
             card.style.transform = '';
-            card.style.transition = 'all 0.5s ease';
-            setTimeout(() => {
-                card.style.transition = '';
-            }, 500);
-        });
-
-        card.addEventListener('mouseenter', () => {
-            card.style.transition = 'border-color 0.35s ease, box-shadow 0.35s ease, background 0.35s ease';
         });
     });
 }
-
 
 /* =========================
    PROJECT MODAL
@@ -231,31 +263,84 @@ const projects = {
     }
 };
 
+const modal = document.getElementById('project-modal');
+let lastFocusedElement = null;
+
 function openProject(name) {
     const project = projects[name];
-    if (!project) return;
+    if (!project || !modal) return;
+
+    lastFocusedElement = document.activeElement;
 
     document.getElementById('modal-category').textContent = project.category;
     document.getElementById('modal-title').textContent = project.title;
     document.getElementById('modal-description').textContent = project.description;
     document.getElementById('modal-details').innerHTML = project.details;
-    document.getElementById('project-modal').classList.add('active');
+
+    modal.classList.add('active');
     document.body.style.overflow = 'hidden';
+
+    requestAnimationFrame(() => {
+        modal.querySelector('.modal-close')?.focus();
+    });
 }
 
 function closeProject() {
-    document.getElementById('project-modal').classList.remove('active');
+    if (!modal) return;
+
+    modal.classList.remove('active');
     document.body.style.overflow = '';
+
+    if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+        lastFocusedElement.focus();
+    }
 }
 
-document.getElementById('project-modal').addEventListener('click', function (e) {
-    if (e.target === this) closeProject();
+modal?.addEventListener('click', (e) => {
+    if (e.target === modal) closeProject();
 });
 
-document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeProject();
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal?.classList.contains('active')) {
+        closeProject();
+    }
 });
 
+/* =========================
+   MAGNETIC BUTTONS
+========================= */
+
+if (!isTouchDevice() && !reduceMotion) {
+    document.querySelectorAll('.btn, .project-btn').forEach(button => {
+        button.addEventListener('pointermove', (e) => {
+            const rect = button.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+
+            button.style.transform = `translate(${x * 0.08}px, ${y * 0.08}px)`;
+        });
+
+        button.addEventListener('pointerleave', () => {
+            button.style.transform = '';
+        });
+    });
+}
+
+/* =========================
+   TAG MICRO-INTERACTIONS
+========================= */
+
+if (!reduceMotion) {
+    document.querySelectorAll('.tags').forEach(tags => {
+        [...tags.children].forEach((tag, index) => {
+            tag.style.transitionDelay = '0ms';
+
+            tag.addEventListener('mouseenter', () => {
+                tag.style.transitionDelay = `${index * 12}ms`;
+            });
+        });
+    });
+}
 
 /* =========================
    CONTACT FORM
@@ -264,32 +349,47 @@ document.addEventListener('keydown', e => {
 const contactForm = document.getElementById('contact-form');
 const formStatus = document.getElementById('form-status');
 
-contactForm.addEventListener('submit', async (e) => {
+contactForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const btn = contactForm.querySelector('button[type="submit"]');
+    if (!btn) return;
+
+    const originalText = 'Send Message →';
     btn.disabled = true;
     btn.textContent = 'Sending...';
+    formStatus.textContent = '';
 
     try {
         const response = await fetch(contactForm.action, {
             method: 'POST',
             body: new FormData(contactForm),
-            headers: { 'Accept': 'application/json' }
+            headers: { Accept: 'application/json' }
         });
 
         if (response.ok) {
             formStatus.textContent = "Message sent! I'll get back to you soon. ✨";
             contactForm.reset();
             btn.textContent = 'Message Sent ✓';
+
+            window.setTimeout(() => {
+                btn.disabled = false;
+                btn.textContent = originalText;
+            }, 3500);
         } else {
-            formStatus.textContent = 'Something went wrong. Please try again.';
-            btn.disabled = false;
-            btn.textContent = 'Send Message →';
+            throw new Error('Form submission failed');
         }
     } catch {
-        formStatus.textContent = 'Unable to send. Please try again.';
+        formStatus.textContent = 'Something went wrong. Please try again.';
         btn.disabled = false;
-        btn.textContent = 'Send Message →';
+        btn.textContent = originalText;
     }
+});
+
+/* =========================
+   LOAD STATE
+========================= */
+
+window.addEventListener('load', () => {
+    document.body.classList.remove('loading');
 });

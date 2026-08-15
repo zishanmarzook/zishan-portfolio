@@ -11,6 +11,8 @@
 </head>
 
 <body class="loading">
+    <div class="scroll-progress" aria-hidden="true"></div>
+    <div class="page-noise" aria-hidden="true"></div>
 
     <!-- =====================
          NAVIGATION
@@ -67,6 +69,8 @@
                 </div>
 
                 <div class="hero-stats hero-enter" style="--delay: 0.78s">
+                    <span class="live-dot"><i></i> Currently building</span>
+                    <span class="dot">·</span>
                     <span>3 Projects</span>
                     <span class="dot">·</span>
                     <span>Python · JavaScript · HTML/CSS</span>
@@ -79,7 +83,7 @@
         <!-- =====================
              ABOUT
         ===================== -->
-        <section id="about" class="about">
+        <section id="about" class="about section-shell">
             <div class="section-inner">
                 <div class="about-header">
                     <p class="section-label reveal">ABOUT ME</p>
@@ -120,7 +124,7 @@
         <!-- =====================
              SKILLS
         ===================== -->
-        <section id="skills" class="skills">
+        <section id="skills" class="skills section-shell">
             <div class="section-inner">
                 <div class="skills-header">
                     <p class="section-label reveal">SKILLS</p>
@@ -174,7 +178,7 @@
         <!-- =====================
              PROJECTS
         ===================== -->
-        <section id="projects" class="projects">
+        <section id="projects" class="projects section-shell">
             <div class="section-inner">
                 <div class="projects-header">
                     <p class="section-label reveal">PROJECTS</p>
@@ -244,9 +248,9 @@
         <!-- =====================
              PROJECT MODAL
         ===================== -->
-        <div id="project-modal" class="modal">
+        <div id="project-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
             <div class="modal-box">
-                <button class="modal-close" onclick="closeProject()">×</button>
+                <button class="modal-close" type="button" aria-label="Close project details" onclick="closeProject()">×</button>
                 <p id="modal-category" class="section-label"></p>
                 <h2 id="modal-title"></h2>
                 <p id="modal-description"></p>
@@ -257,7 +261,7 @@
         <!-- =====================
              CONTACT
         ===================== -->
-        <section id="contact" class="contact">
+        <section id="contact" class="contact section-shell">
             <div class="section-inner">
                 <div class="contact-header">
                     <p class="section-label reveal">CONTACT</p>
@@ -321,6 +325,8 @@
         </section>
 
     </main>
+
+    <button class="back-to-top" type="button" aria-label="Back to top">↑</button>
 
     <!-- =====================
          FOOTER
