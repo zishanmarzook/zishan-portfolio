@@ -410,3 +410,140 @@ if (!reduceMotion && !isTouchDevice()) {
     if (!ticking) { ticking = true; requestAnimationFrame(updateAtmosphere); }
   }, {passive:true});
 }
+
+
+/* V3 — progressive enhancements, all optional */
+(() => {
+  const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const motionButton = document.getElementById('motion-toggle');
+  let manuallyReduced = false;
+  const motionDisabled = () => motionQuery.matches || manuallyReduced;
+  const syncMotion = () => {
+    document.documentElement.classList.toggle('motion-off', motionDisabled());
+    motionButton?.setAttribute('aria-pressed', String(manuallyReduced));
+    if (motionButton) motionButton.textContent = manuallyReduced ? 'Enable motion' : 'Reduce motion';
+    if (motionDisabled()) {
+      document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+      document.querySelectorAll('.btn,.project-btn').forEach(el => el.style.transform = '');
+      document.querySelector('.custom-cursor')?.classList.remove('is-visible');
+    }
+  };
+  motionButton?.addEventListener('click', () => { manuallyReduced = !manuallyReduced; syncMotion(); });
+  motionQuery.addEventListener?.('change', syncMotion);
+  syncMotion();
+
+  const chips = [...document.querySelectorAll('.filter-chip')];
+  const cards = [...document.querySelectorAll('.project-card[data-project]')];
+  const filterStatus = document.getElementById('project-filter-status');
+  chips.forEach(chip => chip.addEventListener('click', () => {
+    const category = chip.dataset.filter;
+    chips.forEach(c => {
+      const active = c === chip;
+      c.classList.toggle('is-active', active);
+      c.setAttribute('aria-pressed', String(active));
+    });
+    let count = 0;
+    cards.forEach(card => {
+      const match = category === 'all' || card.dataset.project === category;
+      card.hidden = !match;
+      if (match) { count++; card.classList.add('visible'); }
+    });
+    if (filterStatus) filterStatus.textContent = `Showing ${count} ${count === 1 ? 'project' : 'projects'}.`;
+  }));
+
+  const progressBar = document.querySelector('.scroll-progress');
+  let scrollPending = false;
+  const updateProgress = () => {
+    const max = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+    const percent = max ? Math.min(100,Math.max(0,Math.round(window.scrollY / max * 100))) : 0;
+    progressBar?.setAttribute('aria-valuenow', String(percent));
+    scrollPending = false;
+  };
+  window.addEventListener('scroll', () => {
+    if (!scrollPending) { scrollPending = true; requestAnimationFrame(updateProgress); }
+  }, {passive:true});
+  window.addEventListener('resize', updateProgress);
+  updateProgress();
+
+  const emailButton = document.getElementById('copy-email');
+  const emailStatus = document.getElementById('copy-email-status');
+  const emailHelp = document.getElementById('copy-email-help');
+  const email = emailButton?.dataset.email?.trim();
+  if (email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    emailButton.disabled = false;
+    if (emailHelp) emailHelp.textContent = email;
+    emailButton.addEventListener('click', async () => {
+      try {
+        if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(email);
+        else {
+          const selection = document.createElement('textarea');
+          selection.value = email;
+          selection.style.position = 'fixed';
+          selection.style.opacity = '0';
+          document.body.appendChild(selection);
+          selection.select();
+          if (!document.execCommand('copy')) throw new Error('Clipboard unavailable');
+          selection.remove();
+        }
+        if (emailStatus) emailStatus.textContent = 'Email address copied to clipboard.';
+        emailButton.textContent = 'Copied ✓';
+        setTimeout(() => { emailButton.textContent = 'Copy email ↗'; }, 2000);
+      } catch {
+        if (emailStatus) emailStatus.textContent = 'Could not copy. Please use the email address shown.';
+      }
+    });
+  }
+
+  // An additional lightweight cursor ring; the native cursor stays visible.
+  if (window.matchMedia('(hover:hover) and (pointer:fine)').matches) {
+    const ring = document.createElement('div');
+    ring.className = 'custom-cursor';
+    ring.setAttribute('aria-hidden','true');
+    document.body.appendChild(ring);
+    let lastEvent;
+    let frame = 0;
+    document.addEventListener('pointermove', event => {
+      if (motionDisabled()) return;
+      lastEvent = event;
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        ring.style.left = lastEvent.clientX + 'px';
+        ring.style.top = lastEvent.clientY + 'px';
+        ring.classList.add('is-visible');
+        ring.classList.toggle('is-hover', !!lastEvent.target.closest('a,button,.project-card'));
+        frame = 0;
+      });
+    }, {passive:true});
+    document.addEventListener('pointerleave', () => ring.classList.remove('is-visible'));
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) ring.classList.remove('is-visible');
+    });
+  }
+
+  // Keep focus inside the active modal while allowing Escape to close it.
+  const dialog = document.getElementById('project-modal');
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Tab' || !dialog?.classList.contains('active')) return;
+    const items = [...dialog.querySelectorAll('button:not([disabled]),a[href],input:not([disabled]),[tabindex]:not([tabindex="-1"])')].filter(el => el.getClientRects().length);
+    if (!items.length) { event.preventDefault(); dialog.querySelector('.modal-box')?.focus(); return; }
+    const first = items[0], last = items[items.length-1];
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  });
+  const modalObserver = dialog && new MutationObserver(() => {
+    dialog.setAttribute('aria-hidden',String(!dialog.classList.contains('active')));
+  });
+  if (dialog) modalObserver.observe(dialog,{attributes:true,attributeFilter:['class']});
+
+  const mobileToggle = document.querySelector('.nav-toggle');
+  const mobileMenu = document.querySelector('.mobile-nav');
+  mobileToggle?.addEventListener('keydown', event => {
+    if (event.key === 'Escape') mobileToggle.click();
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && mobileMenu?.classList.contains('open')) {
+      mobileToggle?.click();
+      mobileToggle?.focus();
+    }
+  });
+})();

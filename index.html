@@ -12,7 +12,8 @@
 </head>
 
 <body class="loading">
-    <div class="scroll-progress" aria-hidden="true"></div>
+    <div class="scroll-progress" role="progressbar" aria-label="Page scroll progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <div class="page-noise" aria-hidden="true"></div>
 
     <!-- =====================
@@ -28,7 +29,7 @@
             <a href="#contact" class="nav-link">Contact</a>
         </nav>
 
-        <button class="nav-toggle" aria-label="Toggle navigation">
+        <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-controls="mobile-navigation" aria-expanded="false">
             <span></span>
             <span></span>
             <span></span>
@@ -36,14 +37,14 @@
     </header>
 
     <!-- Mobile Nav Menu -->
-    <div class="mobile-nav">
+    <nav class="mobile-nav" id="mobile-navigation" aria-label="Mobile navigation">
         <a href="#about">About</a>
         <a href="#skills">Skills</a>
         <a href="#projects">Projects</a>
         <a href="#contact">Contact</a>
-    </div>
+    </nav>
 
-    <main>
+    <main id="main-content">
 
         <!-- =====================
              HERO
@@ -190,6 +191,13 @@
                     <p class="section-sub reveal" data-delay="150">A selection of websites, custom bots and apps created to turn ideas into useful experiences.</p>
                 </div>
 
+                <div class="project-filters" role="group" aria-label="Filter projects">
+                    <button type="button" class="filter-chip is-active" data-filter="all" aria-pressed="true">All work <span class="filter-count">03</span></button>
+                    <button type="button" class="filter-chip" data-filter="website" aria-pressed="false">Websites</button>
+                    <button type="button" class="filter-chip" data-filter="bot" aria-pressed="false">Bots</button>
+                    <button type="button" class="filter-chip" data-filter="app" aria-pressed="false">Apps</button>
+                </div>
+                <p class="sr-only" id="project-filter-status" role="status" aria-live="polite"></p>
                 <div class="projects-grid">
 
                     <article class="project-card reveal" data-delay="0" data-project="website">
@@ -253,8 +261,8 @@
         <!-- =====================
              PROJECT MODAL
         ===================== -->
-        <div id="project-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-            <div class="modal-box">
+        <div id="project-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true">
+            <div class="modal-box" tabindex="-1">
                 <button class="modal-close" type="button" aria-label="Close project details" onclick="closeProject()">×</button>
                 <p id="modal-category" class="section-label"></p>
                 <h2 id="modal-title"></h2>
@@ -301,6 +309,12 @@
                     </form>
 
                     <div class="contact-socials reveal" data-delay="150">
+                        <div class="copy-email-row">
+                            <span class="social-label">DIRECT EMAIL</span>
+                            <button type="button" class="copy-email-btn" id="copy-email" data-email="zishhh.we@gmail.com" aria-describedby="copy-email-help">Copy email <span aria-hidden="true">↗</span></button>
+                            <p id="copy-email-help">zishhh.we@gmail.com</p>
+                            <span id="copy-email-status" class="sr-only" role="status" aria-live="polite"></span>
+                        </div>
                         <a href="https://wa.me/917034345577" target="_blank" class="social-card">
                             <div>
                                 <span class="social-label">WHATSAPP</span>
@@ -331,6 +345,7 @@
 
     </main>
 
+    <button class="motion-toggle" id="motion-toggle" type="button" aria-pressed="false" title="Toggle decorative motion">Reduce motion</button>
     <button class="back-to-top" type="button" aria-label="Back to top">↑</button>
 
     <!-- =====================
