@@ -547,3 +547,35 @@ if (!reduceMotion && !isTouchDevice()) {
     }
   });
 })();
+
+
+/* V4: Skill explorer and a small, optional Easter egg */
+(() => {
+ const descriptions={"Python":"🐍 Making computers do the boring stuff: scripts, automation and bot logic.","JavaScript":"⚡ Making websites interactive instead of just pretty screenshots.","TypeScript":"🧩 JavaScript with extra guardrails for more maintainable code.","HTML":"🏗️ The structure behind every good web page.","CSS":"🎨 Turning plain layouts into something people actually want to look at.","SQL":"🗄️ Asking databases the right questions.","React":"⚛️ Reusable interface pieces for interactive web apps.","APIs":"🔌 Getting different apps and services to talk to each other.","Web Development":"🌐 Building responsive websites that work across screens.","App Development":"📱 Exploring useful app flows, interfaces and features.","Discord Bots":"🤖 Commands, workflows and tools for online communities.","Automation":"🔁 Less repetitive clicking, more useful work.","Blender":"🧊 Experimenting with 3D objects and digital scenes.","UI/UX":"🧠 Making interfaces easier to understand and use.","3D Design":"🌌 Exploring shape, depth, lighting and visual composition."};
+ const detail=document.getElementById('skill-detail');
+ const tokens=[...document.querySelectorAll('.skill-token')];
+ tokens.forEach(token=>token.addEventListener('click',()=>{
+  const name=token.dataset.skill;
+  tokens.forEach(t=>t.setAttribute('aria-expanded',String(t===token)));
+  if(!detail)return;
+  const label=detail.querySelector('.skill-detail-label');
+  const description=detail.querySelector('p');
+  if(label)label.textContent=name.toUpperCase()+' / WHAT IT DOES';
+  if(description)description.textContent=descriptions[name]||'Still learning, still building.';
+ }));
+ const quotes=['404: sleep schedule not found. 💤','It worked on my machine. 👀','Powered by curiosity and Ctrl+Z. ⚡','Touch grass? After this commit. 🌱','This site contains traces of caffeine. ☕'];
+ let clicks=0,reset;
+ const logo=document.querySelector('.footer-logo');
+ const toast=document.getElementById('quote-toast');
+ logo?.addEventListener('click',()=>{
+  clicks++;
+  clearTimeout(reset);
+  reset=setTimeout(()=>clicks=0,1800);
+  if(clicks<4||!toast)return;
+  clicks=0;
+  toast.textContent=quotes[Math.floor(Math.random()*quotes.length)];
+  toast.hidden=false;
+  clearTimeout(toast._hide);
+  toast._hide=setTimeout(()=>toast.hidden=true,3500);
+ });
+})();
