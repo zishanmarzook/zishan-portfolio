@@ -393,3 +393,20 @@ contactForm?.addEventListener('submit', async (e) => {
 window.addEventListener('load', () => {
     document.body.classList.remove('loading');
 });
+
+
+/* V2: scroll-driven atmospheric depth; compositor-only motion */
+if (!reduceMotion && !isTouchDevice()) {
+  const orbits = [...document.querySelectorAll('.hero-orbit')];
+  let ticking = false;
+  const updateAtmosphere = () => {
+    const scroll = Math.min(window.scrollY, window.innerHeight);
+    orbits.forEach((el,i) => {
+      el.style.translate = `0 ${scroll * (i ? .08 : .14)}px`;
+    });
+    ticking = false;
+  };
+  window.addEventListener('scroll', () => {
+    if (!ticking) { ticking = true; requestAnimationFrame(updateAtmosphere); }
+  }, {passive:true});
+}
