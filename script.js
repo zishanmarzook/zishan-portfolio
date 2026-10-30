@@ -469,7 +469,7 @@ if (!reduceMotion && !isTouchDevice()) {
   const emailStatus = document.getElementById('copy-email-status');
   const emailHelp = document.getElementById('copy-email-help');
   const email = emailButton?.dataset.email?.trim();
-  if (email && /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) {
+  if (email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     emailButton.disabled = false;
     if (emailHelp) emailHelp.textContent = email;
     emailButton.addEventListener('click', async () => {
