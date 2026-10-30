@@ -579,3 +579,87 @@ if (!reduceMotion && !isTouchDevice()) {
   toast._hide=setTimeout(()=>toast.hidden=true,3500);
  });
 })();
+
+/* A draggable 3D constellation of interests; no external runtime needed. */
+(() => {
+    const viewport = document.querySelector('.orbit-viewport');
+    if (!viewport) return;
+    const carousel = document.querySelector('.interest-carousel');
+    const planets = [...document.querySelectorAll('.interest-planet')];
+    const play = document.getElementById('orbit-play');
+    const media = matchMedia('(prefers-reduced-motion: reduce)');
+    const interests = [
+        ['Code & curiosity', 'Python, JavaScript, and turning “what if” into something real.'],
+        ['Bots with personality', 'Custom Discord bots, useful commands, and tools for online communities.'],
+        ['Automate the boring stuff', 'Scripts and workflows that do the repetitive clicking for me.'],
+        ['Design that feels right', 'Exploring interfaces, thoughtful details, and experiences that make sense.'],
+        ['Thinking in three dimensions', 'Blender, digital scenes, and experimenting with shape, light, and depth.'],
+        ['Ideas into apps', 'Building websites and exploring useful app interfaces, one experiment at a time.']
+    ];
+    let angle = 0, selected = -1, paused = false, dragging = false, moved = false, lastX = 0, lastTime = 0, frame = 0;
+    const motionOff = () => media.matches || document.documentElement.classList.contains('motion-off');
+    function render() {
+        carousel.style.setProperty('--orbit-angle', angle + 'deg');
+        const index = ((Math.round(-angle / 60) % 6) + 6) % 6;
+        if (index === selected) return;
+        selected = index;
+        document.getElementById('orbit-title').textContent = interests[index][0];
+        document.getElementById('orbit-description').textContent = interests[index][1];
+        document.querySelector('.orbit-number').textContent = '0' + (index + 1) + ' / 06';
+        planets.forEach((planet, i) => planet.setAttribute('aria-pressed', String(i === index)));
+    }
+    function syncPlay() {
+        play.textContent = motionOff() ? 'Motion reduced' : paused ? 'Play orbit' : 'Pause orbit';
+        play.disabled = motionOff();
+        play.setAttribute('aria-pressed', String(!paused && !motionOff()));
+    }
+    function choose(index) {
+        paused = true;
+        angle += (((( -index * 60 - angle) % 360) + 540) % 360) - 180;
+        render(); syncPlay();
+    }
+    function step(direction) { choose((selected + direction + 6) % 6); }
+    document.getElementById('orbit-prev').addEventListener('click', () => step(-1));
+    document.getElementById('orbit-next').addEventListener('click', () => step(1));
+    play.addEventListener('click', () => { paused = !paused; syncPlay(); });
+    planets.forEach((planet, i) => planet.addEventListener('click', event => {
+        if (moved && event.detail !== 0) { event.preventDefault(); return; }
+        choose(i);
+    }));
+    viewport.addEventListener('keydown', event => {
+        if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+            event.preventDefault(); step(event.key === 'ArrowRight' ? 1 : -1);
+        }
+    });
+    viewport.addEventListener('pointerdown', event => {
+        if (event.button !== 0) return;
+        dragging = true; moved = false; lastX = event.clientX;
+    });
+    viewport.addEventListener('pointermove', event => {
+        if (!dragging) return;
+        const delta = event.clientX - lastX;
+        if (!moved && Math.abs(delta) < 4) return;
+        moved = true; paused = true;
+        viewport.setPointerCapture(event.pointerId);
+        angle += delta * .45; lastX = event.clientX;
+        render(); syncPlay();
+    });
+    const release = () => { dragging = false; };
+    viewport.addEventListener('pointerup', release);
+    viewport.addEventListener('pointercancel', release);
+    viewport.addEventListener('lostpointercapture', release);
+    let visible = true;
+    new IntersectionObserver(entries => { visible = entries[0].isIntersecting; }).observe(viewport);
+    function animate(time) {
+        const dt = Math.min(time - lastTime, 50); lastTime = time;
+        if (visible && !document.hidden && !paused && !dragging && !motionOff() && !viewport.matches(':focus-within')) {
+            angle -= dt * .006; render();
+        }
+        frame = requestAnimationFrame(animate);
+    }
+    new MutationObserver(syncPlay).observe(document.documentElement, {attributes:true,attributeFilter:['class']});
+    media.addEventListener('change', syncPlay);
+    window.addEventListener('pagehide', () => cancelAnimationFrame(frame));
+    window.addEventListener('pageshow', event => { if (event.persisted) frame = requestAnimationFrame(animate); });
+    render(); syncPlay(); frame = requestAnimationFrame(animate);
+})();
