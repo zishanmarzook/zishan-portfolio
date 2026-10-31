@@ -663,3 +663,129 @@ if (!reduceMotion && !isTouchDevice()) {
     window.addEventListener('pageshow', event => { if (event.persisted) frame = requestAnimationFrame(animate); });
     render(); syncPlay(); frame = requestAnimationFrame(animate);
 })();
+
+/* Optional soundtrack: loaded only after an explicit visitor click. */
+(() => {
+    const launch = document.getElementById('music-launch');
+    const panel = document.getElementById('music-panel');
+    const close = document.getElementById('music-close');
+    const play = document.getElementById('music-play');
+    const mute = document.getElementById('music-mute');
+    const status = document.getElementById('music-status');
+    if (!launch || !panel) return;
+    const VIDEO_ID = 'F7MeTbNKHhM';
+    const START_SECONDS = 8;
+    let player = null;
+    let ready = false;
+    let apiPromise;
+    let generation = 0;
+    let statusTimer;
+    const loadAPI = () => {
+        if (window.YT?.Player) return Promise.resolve();
+        if (apiPromise) return apiPromise;
+        apiPromise = new Promise((resolve, reject) => {
+            const previous = window.onYouTubeIframeAPIReady;
+            window.onYouTubeIframeAPIReady = () => { previous?.(); resolve(); };
+            const script = document.createElement('script');
+            script.src = 'https://www.youtube.com/iframe_api';
+            script.onerror = () => reject(new Error('YouTube unavailable'));
+            document.head.append(script);
+        });
+        return apiPromise;
+    };
+    const sync = () => {
+        if (!ready || !player) return;
+        const playing = player.getPlayerState() === 1;
+        const muted = player.isMuted();
+        play.textContent = playing ? 'Pause' : 'Play';
+        play.setAttribute('aria-pressed', String(playing));
+        mute.textContent = muted ? 'Unmute' : 'Mute';
+        mute.setAttribute('aria-pressed', String(muted));
+        launch.textContent = playing ? '♫ Music playing' : '♫ Music';
+    };
+    const stop = () => {
+        generation++;
+        clearTimeout(statusTimer);
+        clearInterval(panel.syncTimer);
+        if (player) player.destroy();
+        player = null;
+        ready = false;
+        panel.hidden = true;
+        launch.setAttribute('aria-expanded', 'false');
+        launch.textContent = '♫ Play music';
+        launch.focus();
+    };
+    launch.addEventListener('click', async () => {
+        if (!panel.hidden) { stop(); return; }
+        const attempt = ++generation;
+        panel.hidden = false;
+        launch.setAttribute('aria-expanded', 'true');
+        close.focus();
+        play.disabled = mute.disabled = true;
+        status.textContent = 'Loading soundtrack…';
+        document.getElementById('music-video-slot').innerHTML = '<div id="music-video"></div>';
+        statusTimer = setTimeout(() => {
+            if (attempt === generation && !ready)
+                status.textContent = 'Player taking a while? Use the YouTube link below.';
+        }, 12000);
+        try {
+            await loadAPI();
+            if (attempt !== generation) return;
+            player = new YT.Player('music-video', {
+                host: 'https://www.youtube-nocookie.com',
+                width: '100%', height: '200',
+                videoId: VIDEO_ID,
+                playerVars: { start: START_SECONDS, playsinline: 1, controls: 1, rel: 0, origin: location.origin },
+                events: {
+                    onReady: event => {
+                        if (attempt !== generation) return;
+                        clearTimeout(statusTimer);
+                        ready = true;
+                        play.disabled = mute.disabled = false;
+                        event.target.setVolume(35);
+                        event.target.playVideo();
+                        status.textContent = 'Press Play if your browser pauses playback.';
+                        panel.syncTimer = setInterval(sync, 700);
+                        sync();
+                    },
+                    onStateChange: event => {
+                        if (attempt !== generation) return;
+                        sync();
+                        if (event.data === 1) status.textContent = 'Now playing · Jeff Buckley';
+                        else if (event.data === 2) status.textContent = 'Paused';
+                        else if (event.data === 0) {
+                            status.textContent = 'Track finished · press Play to listen again';
+                            event.target.cueVideoById({ videoId: VIDEO_ID, startSeconds: START_SECONDS });
+                        }
+                    },
+                    onAutoplayBlocked: () => {
+                        if (attempt === generation) status.textContent = 'Tap Play in the video to start the music.';
+                    },
+                    onError: () => {
+                        if (attempt !== generation) return;
+                        clearTimeout(statusTimer);
+                        status.textContent = 'Playback unavailable here. Listen on YouTube below.';
+                        play.disabled = mute.disabled = true;
+                    }
+                }
+            });
+        } catch {
+            if (attempt === generation) {
+                clearTimeout(statusTimer);
+                status.textContent = 'Could not load YouTube. Use the link below.';
+            }
+        }
+    });
+    play.addEventListener('click', () => {
+        if (!ready) return;
+        if (player.getPlayerState() === 1) player.pauseVideo();
+        else player.playVideo();
+    });
+    mute.addEventListener('click', () => {
+        if (!ready) return;
+        if (player.isMuted()) player.unMute(); else player.mute();
+        sync();
+    });
+    close.addEventListener('click', stop);
+    panel.addEventListener('keydown', event => { if (event.key === 'Escape') stop(); });
+})();

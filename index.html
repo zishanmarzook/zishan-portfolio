@@ -8,7 +8,7 @@
     <meta name="theme-color" content="#171020">
     <meta name="description" content="Zishan — Developer and creator building websites, bots, apps and automation projects.">
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=chrome-cutout-1">
+    <link rel="stylesheet" href="style.css?v=space-music-1">
 </head>
 
 <body class="loading">
@@ -418,7 +418,25 @@
     </footer>
 
     <div class="quote-toast" id="quote-toast" role="status" aria-live="polite" hidden></div>
-    <script src="script.js?v=689414ca3504"></script>
+
+    <aside class="music-widget" aria-label="Optional soundtrack">
+        <section id="music-panel" class="music-panel" aria-labelledby="music-title" hidden>
+            <div class="music-heading">
+                <div><span class="music-eyebrow">SPACE SOUNDTRACK</span><h3 id="music-title">Everybody Here Wants You</h3><p>Jeff Buckley</p></div>
+                <button id="music-close" type="button" aria-label="Close player and stop music">×</button>
+            </div>
+            <div id="music-video-slot" class="music-video-slot"></div>
+            <div class="music-controls">
+                <button id="music-play" type="button" aria-pressed="false" disabled>Play</button>
+                <button id="music-mute" type="button" aria-pressed="false" disabled>Mute</button>
+                <a href="https://www.youtube.com/watch?v=F7MeTbNKHhM&amp;t=8s" target="_blank" rel="noopener noreferrer">YouTube ↗</a>
+            </div>
+            <p id="music-status" role="status" aria-live="polite">Music starts only when you choose.</p>
+        </section>
+        <button id="music-launch" type="button" aria-expanded="false" aria-controls="music-panel">♫ Play music</button>
+    </aside>
+
+    <script src="script.js?v=space-music-1"></script>
 
 </body>
 </html>
