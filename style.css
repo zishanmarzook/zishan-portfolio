@@ -2204,3 +2204,26 @@ body {
 .music-panel.is-minimized .music-controls button { padding: 8px 10px; font-size: .72rem; }
 .music-panel.is-minimized .music-controls a { font-size: .65rem; }
 .music-panel.is-minimized #music-status { font-size: .65rem; margin-top: 8px; }
+
+
+/* Slow, buoyant drift for the chrome bust; layout stays still. */
+#about .about-portrait {
+    --float-x: 12px;
+    --float-y: 14px;
+    --float-tilt: 1.5deg;
+    transform-origin: 50% 72%;
+    animation: chrome-water-float 12s ease-in-out infinite;
+}
+@keyframes chrome-water-float {
+    0%, 100% { transform: translate3d(0, 0, 0) rotate(-.5deg); }
+    25% { transform: translate3d(var(--float-x), calc(var(--float-y) * -.8), 0) rotate(var(--float-tilt)); }
+    50% { transform: translate3d(0, calc(var(--float-y) * .4), 0) rotate(.4deg); }
+    75% { transform: translate3d(calc(var(--float-x) * -1), calc(var(--float-y) * -1), 0) rotate(calc(var(--float-tilt) * -1)); }
+}
+@media (max-width: 600px) {
+    #about .about-portrait { --float-x: 7px; --float-y: 10px; --float-tilt: 1deg; }
+}
+@media (prefers-reduced-motion: reduce) {
+    #about .about-portrait { animation: none; transform: none; }
+}
+html.motion-off #about .about-portrait { animation: none; transform: none; }
