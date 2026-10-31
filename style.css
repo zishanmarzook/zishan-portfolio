@@ -2227,3 +2227,90 @@ body {
     #about .about-portrait { animation: none; transform: none; }
 }
 html.motion-off #about .about-portrait { animation: none; transform: none; }
+
+
+/* Eight decorative planets, scattered from the hero to contact. */
+#main-content { position: relative; isolation: isolate; }
+#main-content > section { position: relative; z-index: 1; }
+.solar-system { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; user-select: none; }
+.space-planet {
+    position: absolute; width: var(--planet-size); height: var(--planet-size);
+    opacity: .78; animation: planet-drift 24s ease-in-out infinite;
+    animation-delay: var(--planet-delay, 0s);
+}
+.planet-sphere {
+    position: absolute; inset: 0; border-radius: 50%; z-index: 1;
+    background: var(--planet-surface);
+    box-shadow: inset -18px -12px 28px #000c, inset 5px 5px 14px #ffffff38,
+                0 0 24px var(--planet-halo), 0 20px 40px #0006;
+}
+.planet-sphere::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit;
+    background: radial-gradient(circle at 26% 22%, #ffffff35, transparent 38%),
+                linear-gradient(110deg, transparent 30%, #02030b35 58%, #02030be6 100%);
+}
+.planet-mercury {
+    top: 2%; left: -1%; --planet-size: clamp(70px, 8vw, 125px); --planet-delay: -3s; --planet-halo: #b8b1a226;
+    --planet-surface: radial-gradient(circle at 30% 38%, #635e59 0 6%, transparent 8%),
+        radial-gradient(circle at 60% 65%, #6d6861 0 10%, transparent 13%),
+        radial-gradient(circle at 63% 26%, #d3c5b4 0 4%, transparent 7%),
+        radial-gradient(circle at 35% 30%, #bcb5a7, #726d65 65%, #3c3a39);
+}
+.planet-venus {
+    top: 15%; right: -2%; --planet-size: clamp(100px, 13vw, 195px); --planet-delay: -11s; --planet-halo: #ffcd6d38;
+    --planet-surface: repeating-linear-gradient(155deg, #e8bf7b 0%, #ba834e 9%, #f1d098 15%, #c79a61 22%);
+}
+.planet-earth {
+    top: 29%; left: -2%; --planet-size: clamp(100px, 14vw, 210px); --planet-delay: -6s; --planet-halo: #56baff66;
+    --planet-surface: radial-gradient(ellipse at 34% 30%, #5f8b55 0 12%, transparent 13%),
+        radial-gradient(ellipse at 43% 50%, #88a262 0 9%, transparent 10%),
+        radial-gradient(ellipse at 48% 65%, #5c8756 0 11%, transparent 12%),
+        radial-gradient(ellipse at 76% 35%, #8eaa73 0 13%, transparent 14%),
+        repeating-linear-gradient(158deg, transparent 0 15%, #ffffff60 17%, transparent 20% 31%),
+        radial-gradient(circle at 30% 28%, #58b2ce, #1557a1 60%, #0a214f);
+}
+.planet-mars {
+    top: 40%; right: 1%; --planet-size: clamp(80px, 10vw, 150px); --planet-delay: -17s; --planet-halo: #f1885733;
+    --planet-surface: radial-gradient(ellipse at 49% 7%, #dbc9af 0 8%, transparent 12%),
+        radial-gradient(ellipse at 35% 40%, #773e2e 0 12%, transparent 27%),
+        radial-gradient(ellipse at 70% 65%, #87452d 0 15%, transparent 25%),
+        radial-gradient(circle at 30% 25%, #eea174, #b45e39 60%, #67352b);
+}
+.planet-jupiter {
+    top: 52%; left: -5%; --planet-size: clamp(155px, 21vw, 320px); --planet-delay: -8s; --planet-halo: #ddb79133;
+    --planet-surface: radial-gradient(ellipse at 64% 64%, #bc674c 0 6%, #e1a77c 7% 9%, transparent 10%),
+        repeating-linear-gradient(7deg, #d6b496 0 7%, #996d55 8% 11%, #eee0c3 12% 18%, #b48365 19% 23%, #e8cdb0 24% 28%);
+}
+.planet-saturn {
+    top: 66%; right: -1%; --planet-size: clamp(120px, 16vw, 245px); --planet-delay: -15s; --planet-halo: #e8cd9e33;
+    --planet-surface: repeating-linear-gradient(12deg, #c6ad78 0 9%, #e3d3a6 10% 17%, #bba378 18% 21%, #dac596 22% 30%);
+}
+.planet-rings {
+    position: absolute; left: -40%; top: 30%; width: 180%; height: 40%;
+    border: clamp(10px, 2vw, 27px) solid #c0ae8b8c;
+    border-radius: 50%; transform: rotate(-26deg);
+    box-shadow: 0 0 0 3px #ede0b83d, inset 0 0 0 5px #e5d9bd66, 0 0 0 8px #a7957940;
+}
+.ring-front { z-index: 2; clip-path: inset(50% -12% -35% -12%); }
+.planet-uranus {
+    top: 79%; left: 1%; --planet-size: clamp(100px, 13vw, 195px); --planet-delay: -20s; --planet-halo: #8ae3f23d;
+    --planet-surface: repeating-linear-gradient(95deg, #91cdd4 0 14%, #a7dce0 16% 27%, #7fbec9 30% 39%);
+}
+.planet-neptune {
+    top: 93%; right: -2%; --planet-size: clamp(105px, 14vw, 215px); --planet-delay: -4s; --planet-halo: #5e80ff4d;
+    --planet-surface: radial-gradient(ellipse at 58% 56%, #1a3d8c 0 9%, transparent 14%),
+        repeating-linear-gradient(165deg, #3b6ac6 0 14%, #497bd2 16% 25%, #2f56b3 28% 38%);
+}
+@keyframes planet-drift {
+    0%, 100% { transform: translate3d(0, 0, 0) rotate(-4deg); }
+    50% { transform: translate3d(5px, -16px, 0) rotate(4deg); }
+}
+@media (max-width: 768px) {
+    .space-planet { opacity: .3; }
+    .planet-jupiter { left: -70px; }
+    .planet-saturn { right: -40px; }
+    .planet-earth { left: -35px; }
+    .planet-venus, .planet-neptune { right: -35px; }
+}
+@media (prefers-reduced-motion: reduce) { .space-planet { animation: none; } }
+html.motion-off .space-planet { animation: none; }
