@@ -2184,3 +2184,23 @@ body {
 #music-status { color: #c8bfd7; font-size: .7rem; line-height: 1.5; margin-top: 10px; }
 .music-widget button:focus-visible, .music-widget a:focus-visible { outline: 2px solid #a9eaff; outline-offset: 3px; }
 @media(max-width:600px) { .music-widget { right: 12px; bottom: 82px; } }
+
+/* Compact player keeps the video visible and playback uninterrupted. */
+.music-window-controls { display: flex; gap: 2px; flex-shrink: 0; }
+#music-minimize {
+    border: 0; background: transparent; color: #eee6fa; font-size: 1.3rem;
+    padding: 0 8px; min-width: 36px; min-height: 36px; border-radius: 8px;
+}
+#music-minimize:hover, #music-close:hover { background: #b6a0ff22; }
+.music-panel.is-minimized { width: 248px; padding: 12px; border-radius: 14px; }
+.music-panel.is-minimized .music-eyebrow,
+.music-panel.is-minimized .music-heading p { display: none; }
+.music-panel.is-minimized .music-heading { margin-bottom: 8px; gap: 4px; align-items: center; }
+.music-panel.is-minimized .music-heading > div:first-child { min-width: 0; }
+.music-panel.is-minimized .music-heading h3 {
+    font-size: .72rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0;
+}
+.music-panel.is-minimized .music-controls { gap: 6px; }
+.music-panel.is-minimized .music-controls button { padding: 8px 10px; font-size: .72rem; }
+.music-panel.is-minimized .music-controls a { font-size: .65rem; }
+.music-panel.is-minimized #music-status { font-size: .65rem; margin-top: 8px; }

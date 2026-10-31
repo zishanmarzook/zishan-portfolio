@@ -669,6 +669,7 @@ if (!reduceMotion && !isTouchDevice()) {
     const launch = document.getElementById('music-launch');
     const panel = document.getElementById('music-panel');
     const close = document.getElementById('music-close');
+    const minimize = document.getElementById('music-minimize');
     const play = document.getElementById('music-play');
     const mute = document.getElementById('music-mute');
     const status = document.getElementById('music-status');
@@ -703,7 +704,18 @@ if (!reduceMotion && !isTouchDevice()) {
         mute.setAttribute('aria-pressed', String(muted));
         launch.textContent = playing ? '♫ Music playing' : '♫ Music';
     };
+    const setMinimized = value => {
+        panel.classList.toggle('is-minimized', value);
+        minimize.setAttribute('aria-pressed', String(value));
+        minimize.setAttribute('aria-label', value ? 'Expand music player' : 'Minimize music player');
+        minimize.title = value ? 'Expand player' : 'Minimize player';
+        minimize.textContent = value ? '⤢' : '−';
+    };
+    minimize.addEventListener('click', () => {
+        setMinimized(!panel.classList.contains('is-minimized'));
+    });
     const stop = () => {
+        setMinimized(false);
         generation++;
         clearTimeout(statusTimer);
         clearInterval(panel.syncTimer);
@@ -716,7 +728,11 @@ if (!reduceMotion && !isTouchDevice()) {
         launch.focus();
     };
     launch.addEventListener('click', async () => {
-        if (!panel.hidden) { stop(); return; }
+        if (!panel.hidden) {
+            setMinimized(!panel.classList.contains('is-minimized'));
+            minimize.focus();
+            return;
+        }
         const attempt = ++generation;
         panel.hidden = false;
         launch.setAttribute('aria-expanded', 'true');
