@@ -2138,3 +2138,24 @@ body {
     #about .about-header { margin-bottom: 360px; }
     #about .about-header h2 { font-size: clamp(2.4rem, 9vw, 3.4rem); }
 }
+
+
+/* Transparent chrome bust: sharp detail and glow around the silhouette only. */
+#about::after { display: none; }
+#about::before { background: none; animation: none; }
+#about .about-header { margin-bottom: 28px; }
+#about .about-portrait {
+    position: relative;
+    z-index: 0;
+    width: min(100%, 620px);
+    height: 570px;
+    margin: 0 auto -28px;
+    background: url("assets/chrome-bust-transparent.png") center bottom / contain no-repeat;
+    filter: drop-shadow(0 0 14px #99eaff40) drop-shadow(0 0 32px #ef72d329);
+    pointer-events: none;
+}
+#about .about-grid { position: relative; z-index: 1; }
+@media (max-width: 600px) {
+    #about .about-header { margin-bottom: 24px; }
+    #about .about-portrait { height: clamp(360px, 112vw, 500px); margin-bottom: -18px; }
+}
