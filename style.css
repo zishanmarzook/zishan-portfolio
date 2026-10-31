@@ -1877,3 +1877,69 @@ body{background:var(--bg);color:var(--text)}
 @media(min-width:1500px){.orbit-viewport{height:490px}.orbit-scene{scale:1.15}}
 @media(max-width:1000px){.hero{flex-direction:column;align-items:stretch;padding-top:130px}.hero-content{width:100%}.hero h1{max-width:850px;font-size:clamp(3rem,8vw,6rem)}.interest-universe{width:min(100%,520px);margin:45px auto 0}.hero-index{display:none}}
 @media(max-width:480px){.orbit-viewport{height:350px}.orbit-scene{scale:.78}.universe-heading{font-size:9px}.orbit-readout{min-height:130px}.hero{padding-bottom:60px}}
+
+
+/* Chrome portrait atmosphere, scoped to About Me. */
+#about {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: #090810;
+    color: #fff9ef;
+}
+#about::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background: radial-gradient(ellipse at 80% 42%, #83eaff35, transparent 44%),
+                radial-gradient(ellipse at 57% 64%, #ff59c940, transparent 55%);
+    animation: about-glow 7s ease-in-out infinite alternate;
+}
+#about::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    right: 0;
+    width: min(58%, 760px);
+    height: 100%;
+    pointer-events: none;
+    background: url("assets/chrome-portrait.png") center 42% / cover no-repeat;
+    mix-blend-mode: screen;
+    opacity: .72;
+    filter: drop-shadow(0 0 22px #9beeff80);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 38%, #000 90%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 38%, #000 90%, transparent);
+}
+#about .section-inner { position: relative; z-index: 1; }
+#about .section-label { color: #ff93d3; }
+#about .about-header h2 { color: #fff9ef; text-shadow: 0 2px 20px #090810; }
+#about .accent {
+    color: #ff9ddb;
+    text-shadow: 0 0 22px #ff54bb70, 0 2px 12px #090810;
+}
+#about .about-card { box-shadow: 0 0 32px #ff69be28; }
+#about .pillar { box-shadow: 0 0 24px #caff4718; }
+#about .pillar:nth-child(2) { box-shadow: 0 0 24px #72e7ed28; }
+#about .pillar:nth-child(3) { box-shadow: 0 0 24px #b49bff28; }
+@keyframes about-glow {
+    from { opacity: .55; transform: scale(1); }
+    to { opacity: 1; transform: scale(1.05); }
+}
+@media (max-width: 768px) {
+    #about::after {
+        width: 100%;
+        height: 620px;
+        opacity: .38;
+        background-position: center 35%;
+        -webkit-mask-image: linear-gradient(180deg, #000, #000 50%, transparent);
+        mask-image: linear-gradient(180deg, #000, #000 50%, transparent);
+    }
+    #about .about-header h2 { text-shadow: 0 2px 16px #000; }
+}
+@media (prefers-reduced-motion: reduce) {
+    #about::before { animation: none; }
+}
+html.motion-off #about::before { animation: none; }
