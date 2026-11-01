@@ -9,6 +9,7 @@
     <meta name="description" content="Zishan — Developer and creator building websites, bots, apps and automation projects.">
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css?v=solar-system-1">
+    <link rel="stylesheet" href="hector-gallery.css?v=1">
 </head>
 
 <body class="loading">
@@ -295,28 +296,34 @@
         </section>
 
 <section id="business" class="business-showcase section-shell" aria-labelledby="business-heading">
-  <div class="section-inner">
-    <p class="section-label">SIDE QUEST UNLOCKED 🛒</p>
-    <div class="business-layout">
-      <div class="business-story">
-        <p class="business-kicker">REAL-WORLD EXPERIENCE / DISCORD DIGITAL MART</p>
-        <h2 id="business-heading">Not just code.<br><em>I run a mart too. 📦</em></h2>
-        <p>I run a digital mart through Discord, handling orders, customer communication and fulfillment. Building trust takes more than a good-looking website.</p>
-        <div class="business-number"><strong>318</strong><span>orders completed<br><small>Self-reported milestone</small></span></div>
-        <p class="business-quote">“Trust the receipts, not just the aesthetic.” 👀</p>
-      </div>
-      <div class="business-proof">
-        <div class="proof-title"><span>📸 RECEIPTS & VOUCHES</span><span>COMING SOON</span></div>
-        <div class="proof-tiles">
-          <div class="proof-tile"><span>01</span><strong>Order proofs</strong><small>Real screenshots will go here</small></div>
-          <div class="proof-tile"><span>02</span><strong>Customer vouches</strong><small>Verified feedback, not made-up quotes</small></div>
-          <div class="proof-tile"><span>03</span><strong>Store visuals</strong><small>Branding and behind-the-scenes</small></div>
-        </div>
-        <p class="proof-note">Images will be added once supplied. Personal details should be blurred before publishing.</p>
-      </div>
-    </div>
+ <div class="section-inner">
+  <p class="section-label">MY DISCORD DIGITAL MART / EST. ONLINE 🛒</p>
+  <div class="hector-header">
+   <div><p class="hector-kicker">BUILT ON COMMUNITY. BACKED BY RECEIPTS.</p><h2 id="business-heading">HECTOR<span>FLEX</span></h2><p class="hector-subtitle">The store. The orders. The receipts.</p><p>I run HECTORFLEX on Discord, handling orders, customer conversations and delivery. Here’s a look at the store and the feedback customers have shared.</p></div>
+   <div class="hector-milestone"><strong>318</strong><span>orders completed 📦</span><small>Self-reported milestone</small></div>
   </div>
+  <div class="hector-bar"><span>✦ DIGITAL MART</span><span>↗ CUSTOMER FEEDBACK</span><span>◎ ORDER PROOFS</span></div>
+  <div class="hector-filters" role="group" aria-label="Filter store gallery">
+   <button type="button" data-hector-filter="all" aria-pressed="true">All receipts <span>10</span></button>
+   <button type="button" data-hector-filter="orders" aria-pressed="false">📦 Order proofs <span>4</span></button>
+   <button type="button" data-hector-filter="vouches" aria-pressed="false">💬 Picture vouches <span>6</span></button>
+   <button type="button" data-hector-filter="visuals" aria-pressed="false">✦ Store visuals</button>
+  </div>
+  <p id="hector-status" role="status" aria-live="polite"></p>
+  <div id="hector-visuals" class="hector-visuals">
+   <div class="hector-brand-art" role="img" aria-label="HECTORFLEX brand artwork: HF monogram on a violet cosmic background"><span class="hector-art-tag">THE DIGITAL MART</span><strong aria-hidden="true">HF<span>✦</span></strong><span class="hector-art-name">HECTORFLEX</span><small>COMMUNITY / COMMERCE / CONNECTION</small></div>
+   <div class="hector-store"><p class="hector-kicker">INSIDE THE STORE</p><h3>A little corner of Discord.<br>A lot of real conversations.</h3><p>Browse the screenshots below, or visit the store’s channels for more context.</p><a href="https://discord.com/channels/1403735082044227626/1403752839167344681" target="_blank" rel="noopener noreferrer"># order-proofs <span>↗</span></a><a href="https://discord.com/channels/1403735082044227626/1403752243999543356" target="_blank" rel="noopener noreferrer"># vouches <span>↗</span></a><a href="https://discord.com/channels/1403735082044227626/1403752422601658489" target="_blank" rel="noopener noreferrer"># reviews <span>↗</span></a><small>Discord channel links require server membership.</small></div>
+  </div>
+  <div id="hector-gallery" class="hector-gallery"></div>
+  <noscript><p>Enable JavaScript to browse the screenshot gallery. You can also visit the Discord channels above.</p></noscript>
+  <p class="hector-footnote">Screenshots shared from the store’s customer conversations and review channels. Individual experiences and ratings vary.</p>
+ </div>
 </section>
+<dialog id="hector-lightbox" aria-labelledby="hector-caption">
+ <div class="hector-lightbox-top"><p id="hector-caption" aria-live="polite"></p><button type="button" data-hector-close aria-label="Close screenshot">×</button></div>
+ <img alt="">
+ <div class="hector-lightbox-nav"><button type="button" data-hector-prev aria-label="Previous screenshot">← Previous</button><span>← → to browse · Esc to close</span><button type="button" data-hector-next aria-label="Next screenshot">Next →</button></div>
+</dialog>
 
         <!-- =====================
              PROJECT MODAL
@@ -452,5 +459,6 @@
 
     <script src="script.js?v=music-mini-1"></script>
 
+    <script src="hector-gallery.js?v=1"></script>
 </body>
 </html>
